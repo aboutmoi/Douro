@@ -6,44 +6,79 @@
   },
   "domains": [
     {
-      "name": "example.com",
-      "enabled": true,
-      "description": "Site principal de démonstration"
-    },
-    {
-      "name": "wikipedia.org",
-      "enabled": true,
-      "description": "Service de référence - Wikipedia"
-    },
-    {
-      "name": "github.com",
-      "enabled": true,
-      "description": "Plateforme de développement critique"
-    },
-    {
-      "name": "google.com",
-      "enabled": true,
-      "description": "Service Google - Monitoring CDN"
-    },
-    {
-      "name": "stackoverflow.com",
-      "enabled": true,
-      "description": "Communauté technique"
-    },
-    {
-      "name": "reddit.com",
-      "enabled": true,
-      "description": "Plateforme sociale"
-    },
-    {
-      "name": "cloudflare.com",
-      "enabled": true,
-      "description": "Infrastructure CDN"
-    },
-    {
       "name": "aws.amazon.com",
-      "enabled": false,
-      "description": "Infrastructure cloud (temporairement désactivé)"
+      "enabled": true,
+      "description": "Amazon Web Services - Infrastructure critique"
+    },
+    {
+      "name": "cloud.google.com",
+      "enabled": true,
+      "description": "Google Cloud Platform - Services cloud"
+    },
+    {
+      "name": "azure.microsoft.com",
+      "enabled": true,
+      "description": "Microsoft Azure - Cloud enterprise"
+    },
+    {
+      "name": "www.ovhcloud.com",
+      "enabled": true,
+      "description": "OVHcloud - Hébergeur principal Europe"
+    },
+    {
+      "name": "www.scaleway.com",
+      "enabled": true,
+      "description": "Scaleway - Infrastructure française"
+    },
+    {
+      "name": "www.cloudflare.com",
+      "enabled": true,
+      "description": "Cloudflare - CDN et protection DDoS"
+    },
+    {
+      "name": "status.heroku.com",
+      "enabled": true,
+      "description": "Heroku Status - Monitoring PaaS"
+    },
+    {
+      "name": "www.digitalocean.com",
+      "enabled": true,
+      "description": "DigitalOcean - Infrastructure cloud"
+    },
+    {
+      "name": "console.aws.amazon.com",
+      "enabled": true,
+      "description": "AWS Console - Interface critique"
+    },
+    {
+      "name": "console.cloud.google.com",
+      "enabled": true,
+      "description": "GCP Console - Gestion cloud"
+    },
+    {
+      "name": "portal.azure.com",
+      "enabled": true,
+      "description": "Azure Portal - Interface Microsoft"
+    },
+    {
+      "name": "www.hetzner.com",
+      "enabled": true,
+      "description": "Hetzner - Infrastructure européenne"
+    },
+    {
+      "name": "www.linode.com",
+      "enabled": true,
+      "description": "Linode - Cloud computing"
+    },
+    {
+      "name": "api.github.com",
+      "enabled": true,
+      "description": "GitHub API - Services développement"
+    },
+    {
+      "name": "registry.npmjs.org",
+      "enabled": true,
+      "description": "NPM Registry - Dépendances critiques"
     }
   ],
   "monitoring": {

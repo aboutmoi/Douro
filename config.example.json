@@ -1,0 +1,203 @@
+{
+  "exporter": {
+    "port": 9105,
+    "interval_seconds": 300,
+    "timeout_seconds": 10
+  },
+  "domains": [
+    {
+      "name": "aws.amazon.com",
+      "enabled": true,
+      "description": "Amazon Web Services - Leader cloud mondial"
+    },
+    {
+      "name": "cloud.google.com",
+      "enabled": true,
+      "description": "Google Cloud Platform - Infrastructure Google"
+    },
+    {
+      "name": "azure.microsoft.com",
+      "enabled": true,
+      "description": "Microsoft Azure - Cloud enterprise"
+    },
+    {
+      "name": "www.ovhcloud.com",
+      "enabled": true,
+      "description": "OVHcloud - Leader européen"
+    },
+    {
+      "name": "www.scaleway.com",
+      "enabled": true,
+      "description": "Scaleway - Cloud souverain français"
+    },
+    {
+      "name": "www.digitalocean.com",
+      "enabled": true,
+      "description": "DigitalOcean - Cloud pour développeurs"
+    },
+    {
+      "name": "www.linode.com",
+      "enabled": true,
+      "description": "Linode (Akamai) - Cloud infrastructure"
+    },
+    {
+      "name": "www.vultr.com",
+      "enabled": true,
+      "description": "Vultr - Cloud haute performance"
+    },
+    {
+      "name": "www.hetzner.com",
+      "enabled": true,
+      "description": "Hetzner - Hébergeur allemand"
+    },
+    {
+      "name": "www.cloudflare.com",
+      "enabled": true,
+      "description": "Cloudflare - CDN et sécurité web"
+    },
+    {
+      "name": "www.fastly.com",
+      "enabled": true,
+      "description": "Fastly - Edge cloud computing"
+    },
+    {
+      "name": "www.netlify.com",
+      "enabled": true,
+      "description": "Netlify - JAMstack et CI/CD"
+    },
+    {
+      "name": "vercel.com",
+      "enabled": true,
+      "description": "Vercel - Frontend cloud platform"
+    },
+    {
+      "name": "pages.github.com",
+      "enabled": true,
+      "description": "GitHub Pages - Hébergement statique"
+    },
+    {
+      "name": "www.heroku.com",
+      "enabled": true,
+      "description": "Heroku (Salesforce) - Platform as a Service"
+    },
+    {
+      "name": "railway.app",
+      "enabled": true,
+      "description": "Railway - Déploiement moderne"
+    },
+    {
+      "name": "render.com",
+      "enabled": true,
+      "description": "Render - Cloud platform unifié"
+    },
+    {
+      "name": "fly.io",
+      "enabled": true,
+      "description": "Fly.io - Edge deployment"
+    },
+    {
+      "name": "www.infomaniak.com",
+      "enabled": true,
+      "description": "Infomaniak - Hébergeur suisse écologique"
+    },
+    {
+      "name": "www.gandi.net",
+      "enabled": true,
+      "description": "Gandi - Registrar et hébergeur français"
+    },
+    {
+      "name": "www.1and1.fr",
+      "enabled": true,
+      "description": "IONOS (1&1) - Hébergeur européen"
+    },
+    {
+      "name": "www.kimsufi.com",
+      "enabled": true,
+      "description": "Kimsufi (OVH) - Serveurs dédiés"
+    },
+    {
+      "name": "www.soyoustart.com",
+      "enabled": true,
+      "description": "So you Start (OVH) - Infrastructure"
+    },
+    {
+      "name": "www.planethoster.com",
+      "enabled": true,
+      "description": "PlanetHoster - Hébergeur franco-canadien"
+    },
+    {
+      "name": "hostinger.com",
+      "enabled": true,
+      "description": "Hostinger - Hébergement web global"
+    },
+    {
+      "name": "www.godaddy.com",
+      "enabled": true,
+      "description": "GoDaddy - Registrar et hébergement"
+    },
+    {
+      "name": "www.namecheap.com",
+      "enabled": true,
+      "description": "Namecheap - Domaines et hébergement"
+    },
+    {
+      "name": "www.bluehost.com",
+      "enabled": true,
+      "description": "Bluehost - Hébergement WordPress"
+    },
+    {
+      "name": "www.siteground.com",
+      "enabled": true,
+      "description": "SiteGround - Hébergement optimisé"
+    },
+    {
+      "name": "www.upcloud.com",
+      "enabled": true,
+      "description": "UpCloud - Cloud européen"
+    },
+    {
+      "name": "www.contabo.com",
+      "enabled": true,
+      "description": "Contabo - VPS allemand"
+    },
+    {
+      "name": "www.oracle.com",
+      "enabled": true,
+      "description": "Oracle Cloud Infrastructure"
+    },
+    {
+      "name": "www.alibabacloud.com",
+      "enabled": true,
+      "description": "Alibaba Cloud - Cloud asiatique"
+    },
+    {
+      "name": "aws.amazon.com",
+      "enabled": false,
+      "description": "EXEMPLE - Domaine désactivé"
+    },
+    {
+      "name": "firebase.google.com",
+      "enabled": true,
+      "description": "Firebase - Platform Google"
+    },
+    {
+      "name": "supabase.com",
+      "enabled": true,
+      "description": "Supabase - Alternative Firebase open source"
+    },
+    {
+      "name": "planetscale.com",
+      "enabled": true,
+      "description": "PlanetScale - Database platform"
+    },
+    {
+      "name": "railway.app",
+      "enabled": false,
+      "description": "DOUBLON - Railway déjà listé"
+    }
+  ],
+  "monitoring": {
+    "log_level": "INFO",
+    "enable_verbose_logging": false
+  }
+} 

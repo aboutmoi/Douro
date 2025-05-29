@@ -6,29 +6,104 @@
   },
   "domains": [
     {
-      "name": "example.com",
-      "enabled": true,
-      "description": "Site d'exemple"
-    },
-    {
-      "name": "wikipedia.org",
-      "enabled": true,
-      "description": "Encyclopédie en ligne"
-    },
-    {
-      "name": "github.com",
-      "enabled": true,
-      "description": "Plateforme de développement"
-    },
-    {
-      "name": "google.com",
-      "enabled": true,
-      "description": "Moteur de recherche"
-    },
-    {
       "name": "aws.amazon.com",
+      "enabled": true,
+      "description": "Amazon Web Services - AWS"
+    },
+    {
+      "name": "cloud.google.com",
+      "enabled": true,
+      "description": "Google Cloud Platform - GCP"
+    },
+    {
+      "name": "azure.microsoft.com",
+      "enabled": true,
+      "description": "Microsoft Azure"
+    },
+    {
+      "name": "www.ovhcloud.com",
+      "enabled": true,
+      "description": "OVHcloud - Hébergeur français"
+    },
+    {
+      "name": "www.scaleway.com",
+      "enabled": true,
+      "description": "Scaleway - Cloud français"
+    },
+    {
+      "name": "www.digitalocean.com",
+      "enabled": true,
+      "description": "DigitalOcean - Cloud provider"
+    },
+    {
+      "name": "www.linode.com",
+      "enabled": true,
+      "description": "Linode - Cloud infrastructure"
+    },
+    {
+      "name": "www.vultr.com",
+      "enabled": true,
+      "description": "Vultr - Cloud computing"
+    },
+    {
+      "name": "www.hetzner.com",
+      "enabled": true,
+      "description": "Hetzner - Hébergeur allemand"
+    },
+    {
+      "name": "www.cloudflare.com",
+      "enabled": true,
+      "description": "Cloudflare - CDN et sécurité"
+    },
+    {
+      "name": "www.fastly.com",
+      "enabled": true,
+      "description": "Fastly - Edge cloud platform"
+    },
+    {
+      "name": "www.netlify.com",
+      "enabled": true,
+      "description": "Netlify - JAMstack deployment"
+    },
+    {
+      "name": "vercel.com",
+      "enabled": true,
+      "description": "Vercel - Frontend deployment"
+    },
+    {
+      "name": "pages.github.com",
+      "enabled": true,
+      "description": "GitHub Pages - Static hosting"
+    },
+    {
+      "name": "www.heroku.com",
+      "enabled": true,
+      "description": "Heroku - Platform as a Service"
+    },
+    {
+      "name": "www.infomaniak.com",
+      "enabled": true,
+      "description": "Infomaniak - Hébergeur suisse"
+    },
+    {
+      "name": "www.1and1.fr",
+      "enabled": true,
+      "description": "IONOS (1&1) - Hébergeur européen"
+    },
+    {
+      "name": "www.gandi.net",
+      "enabled": true,
+      "description": "Gandi - Registrar et hébergeur français"
+    },
+    {
+      "name": "www.online.net",
       "enabled": false,
-      "description": "Service cloud AWS (désactivé)"
+      "description": "Online.net (Scaleway) - Désactivé pour éviter doublons"
+    },
+    {
+      "name": "firebase.google.com",
+      "enabled": true,
+      "description": "Firebase - Google platform"
     }
   ],
   "monitoring": {
