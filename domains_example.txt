@@ -1,0 +1,22 @@
+# Fichier d'exemple pour Douro - Liste des domaines à analyser
+# Un domaine par ligne, les lignes commençant par # sont ignorées
+
+# Sites de référence
+example.com
+wikipedia.org
+github.com
+
+# Moteurs de recherche
+google.com
+bing.com
+duckduckgo.com
+
+# Services cloud
+aws.amazon.com
+azure.microsoft.com
+cloud.google.com
+
+# Réseaux sociaux
+facebook.com
+twitter.com
+linkedin.com 

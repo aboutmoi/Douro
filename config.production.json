@@ -1,0 +1,53 @@
+{
+  "exporter": {
+    "port": 9105,
+    "interval_seconds": 600,
+    "timeout_seconds": 15
+  },
+  "domains": [
+    {
+      "name": "example.com",
+      "enabled": true,
+      "description": "Site principal de démonstration"
+    },
+    {
+      "name": "wikipedia.org",
+      "enabled": true,
+      "description": "Service de référence - Wikipedia"
+    },
+    {
+      "name": "github.com",
+      "enabled": true,
+      "description": "Plateforme de développement critique"
+    },
+    {
+      "name": "google.com",
+      "enabled": true,
+      "description": "Service Google - Monitoring CDN"
+    },
+    {
+      "name": "stackoverflow.com",
+      "enabled": true,
+      "description": "Communauté technique"
+    },
+    {
+      "name": "reddit.com",
+      "enabled": true,
+      "description": "Plateforme sociale"
+    },
+    {
+      "name": "cloudflare.com",
+      "enabled": true,
+      "description": "Infrastructure CDN"
+    },
+    {
+      "name": "aws.amazon.com",
+      "enabled": false,
+      "description": "Infrastructure cloud (temporairement désactivé)"
+    }
+  ],
+  "monitoring": {
+    "log_level": "WARNING",
+    "enable_verbose_logging": false
+  }
+} 

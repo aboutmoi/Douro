@@ -1,0 +1,55 @@
+[Unit]
+Description=Douro - Analyseur d'infrastructure d'hébergement avec export Prometheus
+Documentation=https://github.com/votre-utilisateur/douro
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=douro
+Group=douro
+WorkingDirectory=/opt/douro
+Environment="PATH=/opt/douro/venv/bin"
+Environment="DOURO_CONFIG=/opt/douro/config.production.json"
+Environment="DOURO_LOG_DIR=/var/log/douro"
+ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config ${DOURO_CONFIG}
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/douro /opt/douro/logs
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RemoveIPC=true
+PrivateDevices=true
+
+# Network restrictions
+IPAccounting=true
+IPAddressAllow=any
+IPAddressDeny=
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+MemoryMax=512M
+CPUQuota=200%
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=douro
+
+[Install]
+WantedBy=multi-user.target 

@@ -1,0 +1,38 @@
+{
+  "exporter": {
+    "port": 9105,
+    "interval_seconds": 300,
+    "timeout_seconds": 10
+  },
+  "domains": [
+    {
+      "name": "example.com",
+      "enabled": true,
+      "description": "Site d'exemple"
+    },
+    {
+      "name": "wikipedia.org",
+      "enabled": true,
+      "description": "Encyclopédie en ligne"
+    },
+    {
+      "name": "github.com",
+      "enabled": true,
+      "description": "Plateforme de développement"
+    },
+    {
+      "name": "google.com",
+      "enabled": true,
+      "description": "Moteur de recherche"
+    },
+    {
+      "name": "aws.amazon.com",
+      "enabled": false,
+      "description": "Service cloud AWS (désactivé)"
+    }
+  ],
+  "monitoring": {
+    "log_level": "INFO",
+    "enable_verbose_logging": false
+  }
+} 
