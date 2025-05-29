@@ -11,6 +11,7 @@ import re
 from typing import Dict, List, Any, Optional, Tuple, Union
 from dataclasses import dataclass, field, asdict
 import datetime
+import logging
 
 import dns.resolver
 import whois
@@ -18,11 +19,10 @@ from ipwhois import IPWhois
 import requests
 
 try:
-    from .region_detector import detect_region
+    from .region_detector import RegionDetector
 except ImportError:
     # Fallback si le module n'est pas disponible
-    def detect_region(target: str):
-        return None, None
+    RegionDetector = None
 
 
 @dataclass
@@ -398,10 +398,19 @@ def analyze_domain(domain: str) -> DomainInfo:
         
         # Détection de région d'hébergement via traceroute
         try:
-            hosting_provider, hosting_region = detect_region(ip)
-            result.hosting_provider = hosting_provider
-            result.hosting_region = hosting_region
+            if RegionDetector:
+                logging.info(f"DEBUG: Détection région pour {ip} (domaine: {domain})")
+                detector = RegionDetector()
+                hosting_provider, hosting_region, hostnames = detector.detect_hosting_region(ip)
+                logging.info(f"DEBUG: Résultat pour {domain}: provider={hosting_provider}, region={hosting_region}, hostnames={len(hostnames) if hostnames else 0}")
+                result.hosting_provider = hosting_provider
+                result.hosting_region = hosting_region
+            else:
+                logging.warning(f"DEBUG: RegionDetector est None pour {domain}")
+                result.hosting_provider = None
+                result.hosting_region = None
         except Exception as e:
+            logging.error(f"DEBUG: Exception région pour {domain}: {e}")
             result.error['region_detection'] = str(e)
             
     except Exception as e:
