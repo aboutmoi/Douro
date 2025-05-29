@@ -1,21 +1,22 @@
 [Unit]
 Description=Douro - Analyseur d'infrastructure d'hébergement avec export Prometheus
-Documentation=https://github.com/votre-utilisateur/douro
+Documentation=https://github.com/aboutmoi/Douro
 After=network.target
-Wants=network-online.target
+Wants=network.target
 
 [Service]
 Type=simple
 User=douro
 Group=douro
 WorkingDirectory=/opt/douro
-Environment="PATH=/opt/douro/venv/bin"
+Environment="PYTHONPATH=/opt/douro"
 Environment="DOURO_CONFIG=/opt/douro/config.production.json"
 Environment="DOURO_LOG_DIR=/var/log/douro"
-ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config ${DOURO_CONFIG}
+ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config config.production.json
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=10
+TimeoutStartSec=30
 TimeoutStopSec=30
 
 # Security settings
@@ -23,7 +24,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/log/douro /opt/douro/logs
+ReadWritePaths=/var/log/douro
 ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
