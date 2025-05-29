@@ -1,39 +1,66 @@
-# Douro
+# 🚀 Douro
 
 Analyseur d'infrastructure d'hébergement de sites Web avec export de métriques Prometheus.
 
-## Fonctionnalités
+[![GitHub](https://img.shields.io/badge/GitHub-aboutmoi%2FDouro-blue)](https://github.com/aboutmoi/Douro)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://python.org)
 
-- Résolution DNS (A, AAAA, CNAME, NS) avec mesure de performance
-- WHOIS domaine (registrar, dates d'expiration)
-- WHOIS/RDAP IP (ASN, organisation, pays) avec détection améliorée
-- Détection CDN intelligente
-- Requête HTTPS (code de statut, en-tête Server)
-- Informations TLS (date d'expiration du certificat)
-- Export des métriques pour Prometheus
-- Configuration JSON centralisée
-- Mode CLI avec sortie texte ou JSON
-- Mode exporteur HTTP pour scrape Prometheus
+## ✨ Fonctionnalités
 
-## Installation
+- **DNS Analysis** : Résolution DNS (A, AAAA, CNAME, NS) avec mesure de performance
+- **WHOIS Domain** : Registrar, dates d'expiration
+- **WHOIS/RDAP IP** : ASN, organisation, pays avec détection améliorée
+- **CDN Detection** : Détection CDN intelligente
+- **HTTPS Monitoring** : Code de statut, en-têtes Server
+- **TLS Certificates** : Date d'expiration des certificats
+- **Prometheus Export** : Métriques pour monitoring
+- **Health Checks** : Endpoints de santé intégrés
+- **Production Ready** : Service systemd sécurisé
+- **DevOps Compliant** : Scripts de déploiement automatisés
 
-### Depuis les sources
+## 📦 Installation
+
+### 🚀 Installation en une ligne (Recommandée)
 
 ```bash
-git clone https://github.com/votre-utilisateur/douro.git
-cd douro
-python3 -m venv venv
-source venv/bin/activate  # Linux/macOS
-pip install -r requirements.txt
+# Installation automatique depuis GitHub
+curl -fsSL https://raw.githubusercontent.com/aboutmoi/Douro/main/scripts/deploy-from-github.sh | bash
 ```
 
-## Configuration
+### 📋 Installation manuelle
 
-Douro utilise un fichier de configuration JSON pour définir les domaines à analyser et les paramètres de fonctionnement.
+#### 1. Cloner le repository
+```bash
+git clone https://github.com/aboutmoi/Douro.git
+cd Douro
+```
 
-### Fichier de configuration
+#### 2. Installation automatisée
+```bash
+# Sur Linux avec systemd
+./scripts/deploy-vm-safe.sh
+```
 
-#### Configuration de développement (`config.json`)
+#### 3. Installation depuis les sources (Développement)
+```bash
+# Environnement virtuel
+python3 -m venv venv
+source venv/bin/activate  # Linux/macOS
+# venv\Scripts\activate     # Windows
+
+# Installation des dépendances
+pip install -r requirements.txt
+
+# Validation de la configuration
+python -m douro.config_validator --config config.json
+```
+
+## 🔧 Configuration
+
+Douro utilise un fichier de configuration JSON pour définir les domaines à analyser.
+
+### Configuration rapide
 
 ```json
 {
@@ -46,17 +73,7 @@ Douro utilise un fichier de configuration JSON pour définir les domaines à ana
     {
       "name": "example.com",
       "enabled": true,
-      "description": "Site d'exemple"
-    },
-    {
-      "name": "wikipedia.org",
-      "enabled": true,
-      "description": "Encyclopédie en ligne"
-    },
-    {
-      "name": "github.com",
-      "enabled": false,
-      "description": "Plateforme de développement (désactivé)"
+      "description": "Mon site web"
     }
   ],
   "monitoring": {
@@ -66,7 +83,174 @@ Douro utilise un fichier de configuration JSON pour définir les domaines à ana
 }
 ```
 
-#### Configuration de production (`config.production.json`)
+### Variables d'environnement
+
+```bash
+# Configuration
+export DOURO_CONFIG="/path/to/config.json"
+export DOURO_LOG_LEVEL="INFO"
+export DOURO_LOG_DIR="/var/log/douro"
+
+# Exporteur
+export DOURO_EXPORTER_PORT="9105"
+export DOURO_EXPORTER_INTERVAL="300"
+
+# Health check
+export DOURO_HEALTH_PORT="9106"
+```
+
+## 🚀 Utilisation
+
+### Mode Production (Service systemd)
+
+```bash
+# Vérifier le statut
+sudo systemctl status douro
+
+# Voir les logs
+sudo journalctl -u douro -f
+
+# Redémarrer
+sudo systemctl restart douro
+```
+
+### Mode Développement
+
+```bash
+# Mode exporteur Prometheus
+python -m douro.douro_exporter --config config.json
+
+# Mode CLI (analyse ponctuelle)
+python -m douro.douro_analyzer example.com wikipedia.org
+
+# Validation de configuration
+python -m douro.config_validator --config config.json
+```
+
+## 📊 Endpoints
+
+### Métriques Prometheus
+- **URL:** `http://localhost:9105/metrics`
+- **Format:** Prometheus metrics
+
+### Health Checks
+- **Health:** `http://localhost:9106/health`
+- **Ready:** `http://localhost:9106/ready` 
+- **Live:** `http://localhost:9106/live`
+
+## 📈 Métriques disponibles
+
+| Métrique | Description |
+|----------|-------------|
+| `douro_domain_info` | Métadonnées (registrar, provider, ASN, pays) |
+| `douro_http_status_code` | Code HTTP (0 = erreur) |
+| `douro_dns_resolve_duration_seconds` | Temps de résolution DNS |
+| `douro_domain_expiration_timestamp` | Timestamp d'expiration du domaine |
+| `douro_tls_cert_expiration_timestamp` | Timestamp d'expiration du certificat TLS |
+| `douro_scrape_duration_seconds` | Durée totale du scrape |
+| `douro_scrape_error` | Indicateur d'erreur (0 = OK, 1 = erreur) |
+
+### Exemples de métriques
+
+```
+douro_domain_info{asn="15169",asn_org="GOOGLE, US",cdn="true",country="US",domain="google.com",registrar="MarkMonitor, Inc."} 1.0
+douro_http_status_code{domain="google.com"} 200
+douro_dns_resolve_duration_seconds{domain="google.com"} 0.045
+```
+
+## 🔍 Configuration Prometheus
+
+```yaml
+# prometheus.yml
+scrape_configs:
+  - job_name: 'douro'
+    scrape_interval: 5m
+    static_configs:
+      - targets: ['localhost:9105']
+```
+
+### Requêtes PromQL utiles
+
+```promql
+# Disponibilité d'un site
+douro_http_status_code{domain="example.com"} != 0
+
+# Jours avant expiration du domaine
+(douro_domain_expiration_timestamp{domain="example.com"} - time()) / 86400
+
+# Performance DNS moyenne
+avg(douro_dns_resolve_duration_seconds) by (domain)
+
+# Sites par pays
+sum by (country) (douro_domain_info{country!="unknown"})
+```
+
+## 🛠️ DevOps
+
+### Scripts disponibles
+
+```bash
+# Déploiement complet
+make install-all
+
+# Gestion du service
+make service-start
+make service-stop
+make service-restart
+
+# Tests et validation
+make test
+make check-config
+make security-check
+
+# Nettoyage
+make clean
+```
+
+### Architecture de déploiement
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Prometheus    │◄───│     Douro       │◄───│   DNS/WHOIS     │
+│   :9090         │    │   :9105/:9106   │    │   Providers     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │
+         ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐
+│    Grafana      │    │    systemd      │
+│    :3000        │    │   douro.service │
+└─────────────────┘    └─────────────────┘
+```
+
+## 🔐 Sécurité
+
+### Configuration systemd sécurisée
+
+- ✅ Utilisateur dédié non-privilégié
+- ✅ Restrictions de sécurité (NoNewPrivileges, ProtectSystem)
+- ✅ Limites de ressources (Memory, CPU)
+- ✅ Journalisation centralisée
+
+### Bonnes pratiques
+
+- **Intervalles** : ≥ 300s pour éviter les rate-limits
+- **Monitoring** : Surveillez `douro_scrape_error`
+- **Logs** : Utilisez `WARNING` en production
+- **Firewall** : Limitez l'accès aux ports métriques
+
+## 🔧 Configuration avancée
+
+### Modifier les domaines surveillés
+
+```bash
+# Éditer la configuration
+sudo nano /opt/douro/config.production.json
+
+# Redémarrer le service
+sudo systemctl restart douro
+```
+
+### Exemple de configuration production
 
 ```json
 {
@@ -82,14 +266,9 @@ Douro utilise un fichier de configuration JSON pour définir les domaines à ana
       "description": "Application principale"
     },
     {
-      "name": "api.entreprise.com",
+      "name": "api.entreprise.com", 
       "enabled": true,
       "description": "API métier critique"
-    },
-    {
-      "name": "cdn.entreprise.com",
-      "enabled": true,
-      "description": "CDN pour les assets statiques"
     }
   ],
   "monitoring": {
@@ -99,232 +278,68 @@ Douro utilise un fichier de configuration JSON pour définir les domaines à ana
 }
 ```
 
-### Paramètres de configuration
-
-#### Section `exporter`
-- `port`: Port HTTP pour l'exposition des métriques (défaut: 9105)
-- `interval_seconds`: Intervalle entre les analyses en secondes (défaut: 300)
-- `timeout_seconds`: Timeout des requêtes HTTP/DNS en secondes (défaut: 10)
-
-#### Section `domains`
-- `name`: Nom de domaine à analyser
-- `enabled`: Active/désactive l'analyse de ce domaine
-- `description`: Description optionnelle du domaine
-
-#### Section `monitoring`
-- `log_level`: Niveau de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- `enable_verbose_logging`: Active les logs détaillés avec fichier/ligne
-
-## Utilisation
-
-### 1. Validation de la configuration
-
-Avant de démarrer l'exporteur, validez votre configuration :
-
-```bash
-# Environnement virtuel
-source venv/bin/activate
-
-# Validation config de développement
-python -m douro.config_validator --config config.json
-
-# Validation config de production
-python -m douro.config_validator --config config.production.json
-```
-
-### 2. Mode Exporteur Prometheus (Recommandé)
-
-Pour un monitoring continu avec Prometheus :
-
-```bash
-# Utiliser le fichier config.json par défaut
-python -m douro.douro_exporter
-
-# Spécifier un fichier de configuration
-python -m douro.douro_exporter --config config.production.json
-```
-
-### 3. Mode CLI (Analyse ponctuelle)
-
-```bash
-# Analyse de domaines spécifiés en arguments
-python -m douro.douro_analyzer example.com wikipedia.org
-
-# Lecture des domaines depuis un fichier
-python -m douro.douro_analyzer --domains-file domains.txt -j -o resultats.json
-```
-
-## Configuration Prometheus
-
-Ajoutez la configuration suivante à votre fichier `prometheus.yml` :
-
-```yaml
-scrape_configs:
-  - job_name: 'douro'
-    scrape_interval: 5m
-    static_configs:
-      - targets: ['localhost:9105']
-```
-
-## Métriques disponibles
-
-- `douro_domain_info` - Métadonnées (registrar, provider, asn, pays)
-- `douro_http_status_code` - Code HTTP (0 = erreur)
-- `douro_dns_resolve_duration_seconds` - Temps de résolution DNS
-- `douro_domain_expiration_timestamp` - Timestamp d'expiration du NDD
-- `douro_tls_cert_expiration_timestamp` - Timestamp d'expiration du certificat TLS
-- `douro_scrape_duration_seconds` - Durée totale du scrape
-- `douro_scrape_error` - Indicateur d'erreur (0 = OK, 1 = erreur)
-
-### Améliorations de détection
-
-#### Détection de pays améliorée
-Douro utilise maintenant une détection de pays multi-sources :
-1. **RDAP/WHOIS standard** : Champ `network.country`
-2. **Analyse des contacts** : Extraction des codes pays depuis les adresses
-3. **Réseaux parents** : Recherche dans la hiérarchie des objets réseau
-4. **Mapping d'organisations** : Déduction basée sur le nom de l'organisation ASN
-
-#### Exemples de métriques améliorées
-```
-douro_domain_info_info{asn="15169",asn_org="GOOGLE, US",cdn="true",country="US",domain="google.com",registrar="MarkMonitor, Inc."} 1.0
-douro_domain_info_info{asn="36459",asn_org="GITHUB, US",cdn="false",country="US",domain="github.com",registrar="MarkMonitor, Inc."} 1.0
-douro_domain_info_info{asn="14907",asn_org="WIKIMEDIA, US",cdn="false",country="NL",domain="wikipedia.org",registrar="MarkMonitor Inc."} 1.0
-```
-
-### Exemples de requêtes PromQL
-
-- Disponibilité d'un site :
-  ```
-  douro_http_status_code{domain="example.com"} != 0
-  ```
-
-- Sites par pays :
-  ```
-  sum by (country) (douro_domain_info{country!="unknown"})
-  ```
-
-- Jours avant expiration du domaine :
-  ```
-  (douro_domain_expiration_timestamp{domain="example.com"} - time()) / 86400
-  ```
-
-- Jours avant expiration du certificat TLS :
-  ```
-  (douro_tls_cert_expiration_timestamp{domain="example.com"} - time()) / 86400
-  ```
-
-- Performance DNS :
-  ```
-  avg(douro_dns_resolve_duration_seconds) by (domain)
-  ```
-
-## Service systemd
-
-Pour exécuter Douro comme service système :
-
-```bash
-# Créer le fichier de service
-sudo tee /etc/systemd/system/douro.service > /dev/null << EOF
-[Unit]
-Description=Douro Website Hosting Analyzer
-After=network.target
-
-[Service]
-Type=simple
-User=douro
-WorkingDirectory=/opt/douro
-Environment=PATH=/opt/douro/venv/bin
-ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config /opt/douro/config.production.json
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Activer et démarrer le service
-sudo systemctl enable douro
-sudo systemctl start douro
-sudo systemctl status douro
-```
-
-## Bonnes pratiques
-
-### Intervalles de scrape
-- **≥ 300s** : Recommandé pour éviter les rate-limits WHOIS
-- **≥ 600s** : Si vous analysez > 20 domaines (production)
-- **≥ 1800s** : Pour un usage intensif (> 100 domaines)
-
-### Monitoring en production
-- Utilisez `log_level: "WARNING"` pour réduire les logs
-- Surveillez les métriques `douro_scrape_error` pour détecter les problèmes
-- Configurez des alertes sur l'expiration des domaines/certificats
-- Activez `enable_verbose_logging: true` uniquement pour le debug
-
-### Sécurité et performance
-- Utilisez un utilisateur dédié non-privilégié pour le service
-- Limitez l'accès au port des métriques (firewall)
-- Surveillez la charge CPU/mémoire sur les gros volumes
-- Utilisez des timeouts appropriés selon votre réseau
-
-## Dépannage
-
-### Problèmes courants
-
-#### "Country unknown" dans les métriques
-- **Cause** : Certains ASN/IP n'exposent pas d'information de pays
-- **Solution** : C'est normal pour certains CDN/providers, les autres champs restent valides
-
-#### Rate-limiting WHOIS
-- **Cause** : Trop de requêtes WHOIS rapprochées
-- **Solution** : Augmentez `interval_seconds` à 600s ou plus
-
-#### Timeouts DNS/HTTP
-- **Cause** : Réseau lent ou sites inaccessibles
-- **Solution** : Augmentez `timeout_seconds` ou désactivez les domaines problématiques
-
-## Limitations
-
-- Rate-limits WHOIS : intervalle ≥ 300s recommandé si > 100 domaines.
-- CDN : l'IP renvoyée peut être celle d'un CDN, non l'hôte d'origine.
-- IPv6 only : fallback sur AAAA si pas de A.
-- TLS absent : métrique douro_tls_cert_expiration_timestamp non exposée.
-- Détection de pays : dépend de la qualité des données WHOIS/RDAP
-
-## Développement
+## 🧪 Tests et développement
 
 ### Tests
 
 ```bash
+# Installation développement
+git clone https://github.com/aboutmoi/Douro.git
+cd Douro
+python3 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
+
+# Lancer les tests
 pytest
+
+# Tests avec couverture
+pytest --cov=douro
 ```
 
 ### Structure du projet
 
 ```
 douro/
-├── core/
-│   ├── analyzer.py          # Module d'analyse principal
-│   ├── metrics.py           # Gestion des métriques Prometheus
-│   └── config.py            # Gestion de la configuration JSON
-├── tests/
-│   ├── test_analyzer.py     # Tests du module analyzer
-│   ├── test_metrics.py      # Tests du module metrics
-│   └── test_config.py       # Tests du module config
-├── douro_analyzer.py        # CLI d'analyse
-├── douro_exporter.py        # Exporteur Prometheus
-└── config_validator.py     # Validateur de configuration
+├── core/                    # Modules principaux
+│   ├── analyzer.py          # Analyseur principal
+│   ├── metrics.py           # Métriques Prometheus
+│   ├── config.py            # Configuration
+│   └── healthcheck.py       # Health checks
+├── scripts/                 # Scripts DevOps
+│   ├── deploy-vm-safe.sh    # Déploiement sécurisé
+│   ├── deploy-from-github.sh # Installation GitHub
+│   └── install-service.sh   # Installation service
+├── systemd/                 # Configuration systemd
+├── tests/                   # Tests unitaires
+└── configs/                 # Configurations
 ```
 
-### Roadmap
+## 📚 Documentation
 
-- Implémentation asynchrone (aiodns/aiohttp)
-- Cache Redis/SQLite pour WHOIS
-- Export CSV/XLSX
-- API REST (FastAPI)
-- Interface web de gestion
-- Alerting intégré
-- Support IPv6 natif
-- Métriques de performance réseau étendues 
+- **[Installation détaillée](INSTALL.md)** - Guide d'installation complet
+- **[Déploiement](DEPLOYMENT.md)** - Guide de déploiement DevOps
+- **[Configuration](config.example.json)** - Exemples de configuration
+
+## 🤝 Contribution
+
+1. Fork le projet : https://github.com/aboutmoi/Douro
+2. Créez une branche feature (`git checkout -b feature/amelioration`)
+3. Commitez vos changements (`git commit -am 'Ajout feature'`)
+4. Poussez la branche (`git push origin feature/amelioration`)
+5. Ouvrez une Pull Request
+
+## 📄 License
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 🙏 Remerciements
+
+- **Prometheus** - Système de monitoring
+- **Python WHOIS** - Bibliothèque WHOIS
+- **dnspython** - Résolution DNS
+- **Communauté Open Source** - Pour les outils et bibliothèques
+
+---
+
+**🎯 Douro - Monitoring d'infrastructure simple et efficace** 
