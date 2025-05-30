@@ -19,14 +19,67 @@ Analyseur d'infrastructure d'hébergement de sites Web avec export de métriques
 - **Production Ready** : Service systemd sécurisé
 - **DevOps Compliant** : Scripts de déploiement automatisés
 
-## 📦 Installation
+## 🚀 Démarrage rapide
 
-### 🚀 Installation en une ligne (Recommandée)
-
+### 1. Installation (2 minutes)
 ```bash
 # Installation automatique depuis GitHub
 curl -fsSL https://raw.githubusercontent.com/aboutmoi/Douro/main/scripts/deploy-from-github.sh | bash
 ```
+
+### 2. Configuration des sites à surveiller
+```bash
+# Éditer la configuration
+sudo nano /opt/douro/config.production.json
+```
+
+**Exemple simple - Surveillez vos propres sites :**
+```json
+{
+  "exporter": {
+    "port": 9105,
+    "interval_seconds": 300
+  },
+  "domains": [
+    {
+      "name": "monsite.com",
+      "enabled": true,
+      "description": "Mon site principal"
+    },
+    {
+      "name": "api.monapp.com", 
+      "enabled": true,
+      "description": "API de mon application"
+    }
+  ],
+  "monitoring": {
+    "log_level": "INFO"
+  }
+}
+```
+
+### 3. Redémarrer et vérifier
+```bash
+# Redémarrer le service
+sudo systemctl restart douro
+
+# Voir les métriques (après quelques minutes)
+curl http://localhost:9105/metrics | grep douro_domain_info
+```
+
+### 4. Intégration Prometheus
+```yaml
+# Ajouter à votre prometheus.yml
+scrape_configs:
+  - job_name: 'douro'
+    scrape_interval: 5m
+    static_configs:
+      - targets: ['localhost:9105']
+```
+
+**✅ C'est tout ! Douro surveille maintenant vos sites et expose les métriques.**
+
+## 📦 Installation
 
 ### 📋 Installation manuelle
 

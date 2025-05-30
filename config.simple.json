@@ -1,0 +1,28 @@
+{
+  "exporter": {
+    "port": 9105,
+    "interval_seconds": 300,
+    "timeout_seconds": 15
+  },
+  "domains": [
+    {
+      "name": "google.com",
+      "enabled": true,
+      "description": "Test - Google"
+    },
+    {
+      "name": "github.com",
+      "enabled": true,
+      "description": "Test - GitHub"
+    },
+    {
+      "name": "stackoverflow.com",
+      "enabled": true,
+      "description": "Test - Stack Overflow"
+    }
+  ],
+  "monitoring": {
+    "log_level": "INFO",
+    "enable_verbose_logging": false
+  }
+} 
