@@ -1,56 +1,30 @@
 [Unit]
-Description=Douro - Analyseur d'infrastructure d'hébergement avec export Prometheus
+Description=Douro - Web hosting infrastructure analyzer with Prometheus export
 Documentation=https://github.com/aboutmoi/Douro
 After=network.target
-Wants=network.target
 
 [Service]
 Type=simple
 User=douro
 Group=douro
 WorkingDirectory=/opt/douro
-Environment="PYTHONPATH=/opt/douro"
-Environment="DOURO_CONFIG=/opt/douro/config.production.json"
-Environment="DOURO_LOG_DIR=/var/log/douro"
-ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config config.production.json
-ExecReload=/bin/kill -HUP $MAINPID
+Environment=PYTHONPATH=/opt/douro
+ExecStart=/opt/douro/venv/bin/python -m douro.douro_exporter --config /opt/douro/config.production.json
 Restart=always
 RestartSec=10
-TimeoutStartSec=30
-TimeoutStopSec=30
+StandardOutput=journal
+StandardError=journal
 
 # Security settings
 NoNewPrivileges=true
-PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
 ReadWritePaths=/var/log/douro
-ProtectKernelTunables=true
-ProtectKernelModules=true
-ProtectControlGroups=true
-RestrictNamespaces=true
-LockPersonality=true
-MemoryDenyWriteExecute=true
-RestrictRealtime=true
-RestrictSUIDSGID=true
-RemoveIPC=true
-PrivateDevices=true
-
-# Network restrictions
-IPAccounting=true
-IPAddressAllow=any
-IPAddressDeny=
+PrivateTmp=true
 
 # Resource limits
-LimitNOFILE=65536
-LimitNPROC=4096
 MemoryMax=512M
-CPUQuota=200%
-
-# Logging
-StandardOutput=journal
-StandardError=journal
-SyslogIdentifier=douro
+TasksMax=10
 
 [Install]
 WantedBy=multi-user.target 

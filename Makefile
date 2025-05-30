@@ -1,5 +1,5 @@
-# Makefile pour Douro
-# Automatisation des tâches de développement, test et déploiement
+# Makefile for Douro
+# Automation of development, testing and deployment tasks
 
 # Variables
 PYTHON = python3
@@ -11,7 +11,7 @@ INSTALL_DIR = /opt/douro
 CONFIG_DIR = /etc/douro
 LOG_DIR = /var/log/douro
 
-# Couleurs pour l'affichage
+# Colors for display
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
 RED = \033[0;31m
@@ -19,190 +19,190 @@ NC = \033[0m # No Color
 
 .PHONY: help install dev test lint clean build deploy service-install service-start service-stop service-status health check-config
 
-# Aide par défaut
+# Default help
 help:
-	@echo "$(GREEN)Makefile pour Douro - Analyseur d'infrastructure$(NC)"
+	@echo "$(GREEN)Makefile for Douro - Infrastructure Analyzer$(NC)"
 	@echo ""
-	@echo "$(YELLOW)Commandes de développement:$(NC)"
-	@echo "  install          - Installation initiale avec environnement virtuel"
-	@echo "  dev              - Installation des dépendances de développement"
-	@echo "  test             - Exécution des tests"
-	@echo "  lint             - Vérification du code avec flake8 et mypy"
-	@echo "  clean            - Nettoyage des fichiers temporaires"
+	@echo "$(YELLOW)Development commands:$(NC)"
+	@echo "  install          - Initial installation with virtual environment"
+	@echo "  dev              - Install development dependencies"
+	@echo "  test             - Run tests"
+	@echo "  lint             - Code verification with flake8 and mypy"
+	@echo "  clean            - Clean temporary files"
 	@echo ""
-	@echo "$(YELLOW)Commandes de build et packaging:$(NC)"
-	@echo "  build            - Construction du package Python"
-	@echo "  check-config     - Validation de la configuration"
+	@echo "$(YELLOW)Build and packaging commands:$(NC)"
+	@echo "  build            - Build Python package"
+	@echo "  check-config     - Configuration validation"
 	@echo ""
-	@echo "$(YELLOW)Commandes de déploiement:$(NC)"
-	@echo "  deploy           - Déploiement complet sur le serveur"
-	@echo "  service-install  - Installation du service systemd (nécessite sudo)"
-	@echo "  service-start    - Démarrage du service"
-	@echo "  service-stop     - Arrêt du service"
-	@echo "  service-status   - Statut du service"
-	@echo "  health           - Vérification de l'état de santé"
+	@echo "$(YELLOW)Deployment commands:$(NC)"
+	@echo "  deploy           - Complete deployment on server"
+	@echo "  service-install  - Install systemd service (requires sudo)"
+	@echo "  service-start    - Start service"
+	@echo "  service-stop     - Stop service"
+	@echo "  service-status   - Service status"
+	@echo "  health           - Health check"
 
-# Installation initiale
+# Initial installation
 install:
-	@echo "$(GREEN)Installation de Douro...$(NC)"
+	@echo "$(GREEN)Installing Douro...$(NC)"
 	$(PYTHON) -m venv $(VENV)
 	$(VENV_BIN)/pip install --upgrade pip
 	$(VENV_BIN)/pip install -r requirements.txt
 	$(VENV_BIN)/pip install -e .
-	@echo "$(GREEN)Installation terminée!$(NC)"
-	@echo "Activez l'environnement avec: source $(VENV)/bin/activate"
+	@echo "$(GREEN)Installation completed!$(NC)"
+	@echo "Activate environment with: source $(VENV)/bin/activate"
 
-# Installation des dépendances de développement
+# Development dependencies installation
 dev: install
-	@echo "$(GREEN)Installation des dépendances de développement...$(NC)"
+	@echo "$(GREEN)Installing development dependencies...$(NC)"
 	$(VENV_BIN)/pip install flake8 mypy black isort pytest-cov
-	@echo "$(GREEN)Environnement de développement configuré!$(NC)"
+	@echo "$(GREEN)Development environment configured!$(NC)"
 
 # Tests
 test:
-	@echo "$(GREEN)Exécution des tests...$(NC)"
+	@echo "$(GREEN)Running tests...$(NC)"
 	$(VENV_BIN)/python -m pytest douro/tests/ -v
-	@echo "$(GREEN)Tests terminés!$(NC)"
+	@echo "$(GREEN)Tests completed!$(NC)"
 
-# Tests avec couverture
+# Tests with coverage
 test-cov:
-	@echo "$(GREEN)Exécution des tests avec couverture...$(NC)"
+	@echo "$(GREEN)Running tests with coverage...$(NC)"
 	$(VENV_BIN)/python -m pytest douro/tests/ -v --cov=douro --cov-report=html --cov-report=term
-	@echo "$(GREEN)Rapport de couverture généré dans htmlcov/$(NC)"
+	@echo "$(GREEN)Coverage report generated in htmlcov/$(NC)"
 
 # Linting
 lint:
-	@echo "$(GREEN)Vérification du code...$(NC)"
+	@echo "$(GREEN)Code verification...$(NC)"
 	$(VENV_BIN)/flake8 douro/ --max-line-length=120 --ignore=E501,W503
 	$(VENV_BIN)/mypy douro/ --ignore-missing-imports
-	@echo "$(GREEN)Vérification terminée!$(NC)"
+	@echo "$(GREEN)Verification completed!$(NC)"
 
-# Formatage du code
+# Code formatting
 format:
-	@echo "$(GREEN)Formatage du code...$(NC)"
+	@echo "$(GREEN)Code formatting...$(NC)"
 	$(VENV_BIN)/black douro/ --line-length=120
 	$(VENV_BIN)/isort douro/
-	@echo "$(GREEN)Formatage terminé!$(NC)"
+	@echo "$(GREEN)Formatting completed!$(NC)"
 
-# Nettoyage
+# Cleanup
 clean:
-	@echo "$(GREEN)Nettoyage...$(NC)"
+	@echo "$(GREEN)Cleaning...$(NC)"
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
 	find . -type d -name "*.egg-info" -exec rm -rf {} +
 	rm -rf build/ dist/ htmlcov/ .coverage .pytest_cache/ .mypy_cache/
-	@echo "$(GREEN)Nettoyage terminé!$(NC)"
+	@echo "$(GREEN)Cleanup completed!$(NC)"
 
-# Build du package
+# Package build
 build: clean
-	@echo "$(GREEN)Construction du package...$(NC)"
+	@echo "$(GREEN)Building package...$(NC)"
 	@if [ ! -d "$(VENV)" ]; then \
-		echo "Création de l'environnement virtuel..."; \
+		echo "Creating virtual environment..."; \
 		$(PYTHON) -m venv $(VENV); \
 		$(VENV_BIN)/pip install --upgrade pip; \
 		$(VENV_BIN)/pip install wheel setuptools; \
 	fi
 	$(VENV_BIN)/python setup.py sdist bdist_wheel
-	@echo "$(GREEN)Package construit dans dist/$(NC)"
+	@echo "$(GREEN)Package built in dist/$(NC)"
 
-# Validation de la configuration
+# Configuration validation
 check-config:
-	@echo "$(GREEN)Validation de la configuration...$(NC)"
+	@echo "$(GREEN)Configuration validation...$(NC)"
 	@if [ -f "config.json" ]; then \
 		$(PYTHON) -c "import json; json.load(open('config.json'))" && echo "config.json: OK"; \
 	else \
-		echo "config.json: Fichier non trouvé (optionnel)"; \
+		echo "config.json: File not found (optional)"; \
 	fi
 	@if [ -f "config.production.json" ]; then \
 		$(PYTHON) -c "import json; json.load(open('config.production.json'))" && echo "config.production.json: OK"; \
 	else \
-		echo "config.production.json: Fichier non trouvé (optionnel)"; \
+		echo "config.production.json: File not found (optional)"; \
 	fi
-	@echo "$(GREEN)Configuration validée!$(NC)"
+	@echo "$(GREEN)Configuration validated!$(NC)"
 
-# Analyse de sécurité
+# Security analysis
 security:
-	@echo "$(GREEN)Analyse de sécurité...$(NC)"
+	@echo "$(GREEN)Security analysis...$(NC)"
 	$(VENV_BIN)/pip install safety bandit
 	$(VENV_BIN)/safety check
 	$(VENV_BIN)/bandit -r douro/ -f json -o security-report.json || true
-	@echo "$(GREEN)Analyse de sécurité terminée!$(NC)"
+	@echo "$(GREEN)Security analysis completed!$(NC)"
 
-# Déploiement complet
+# Complete deployment
 deploy: check-config
-	@echo "$(GREEN)Déploiement de Douro...$(NC)"
+	@echo "$(GREEN)Deploying Douro...$(NC)"
 	@if [ ! -d "$(INSTALL_DIR)" ]; then \
-		echo "$(RED)Erreur: Répertoire d'installation $(INSTALL_DIR) n'existe pas!$(NC)"; \
-		echo "Exécutez d'abord: sudo make service-install"; \
+		echo "$(RED)Error: Installation directory $(INSTALL_DIR) does not exist!$(NC)"; \
+		echo "Run first: sudo make service-install"; \
 		exit 1; \
 	fi
 	sudo cp -r douro/ $(INSTALL_DIR)/
 	sudo cp requirements.txt $(INSTALL_DIR)/
-	sudo cp -f config.production.json $(INSTALL_DIR)/ || echo "Pas de config.production.json"
+	sudo cp -f config.production.json $(INSTALL_DIR)/ || echo "No config.production.json"
 	sudo chown -R douro:douro $(INSTALL_DIR)
 	cd $(INSTALL_DIR) && sudo -u douro python3 -m venv venv
 	cd $(INSTALL_DIR) && sudo -u douro venv/bin/pip install --upgrade pip
 	cd $(INSTALL_DIR) && sudo -u douro venv/bin/pip install -r requirements.txt
-	@echo "$(GREEN)Déploiement terminé!$(NC)"
+	@echo "$(GREEN)Deployment completed!$(NC)"
 
-# Installation du service systemd
+# Systemd service installation
 service-install:
-	@echo "$(GREEN)Installation du service systemd...$(NC)"
+	@echo "$(GREEN)Installing systemd service...$(NC)"
 	sudo ./scripts/install-service.sh
-	@echo "$(GREEN)Service installé!$(NC)"
+	@echo "$(GREEN)Service installed!$(NC)"
 
-# Démarrage du service
+# Start service
 service-start:
-	@echo "$(GREEN)Démarrage du service $(SERVICE_NAME)...$(NC)"
+	@echo "$(GREEN)Starting $(SERVICE_NAME) service...$(NC)"
 	sudo systemctl start $(SERVICE_NAME)
 	sudo systemctl status $(SERVICE_NAME) --no-pager -l
-	@echo "$(GREEN)Service démarré!$(NC)"
+	@echo "$(GREEN)Service started!$(NC)"
 
-# Arrêt du service
+# Stop service
 service-stop:
-	@echo "$(YELLOW)Arrêt du service $(SERVICE_NAME)...$(NC)"
+	@echo "$(YELLOW)Stopping $(SERVICE_NAME) service...$(NC)"
 	sudo systemctl stop $(SERVICE_NAME)
-	@echo "$(GREEN)Service arrêté!$(NC)"
+	@echo "$(GREEN)Service stopped!$(NC)"
 
-# Redémarrage du service
+# Restart service
 service-restart:
-	@echo "$(GREEN)Redémarrage du service $(SERVICE_NAME)...$(NC)"
+	@echo "$(GREEN)Restarting $(SERVICE_NAME) service...$(NC)"
 	sudo systemctl restart $(SERVICE_NAME)
 	sudo systemctl status $(SERVICE_NAME) --no-pager -l
-	@echo "$(GREEN)Service redémarré!$(NC)"
+	@echo "$(GREEN)Service restarted!$(NC)"
 
-# Statut du service
+# Service status
 service-status:
-	@echo "$(GREEN)Statut du service $(SERVICE_NAME):$(NC)"
+	@echo "$(GREEN)$(SERVICE_NAME) service status:$(NC)"
 	sudo systemctl status $(SERVICE_NAME) --no-pager -l
 
-# Logs du service
+# Service logs
 service-logs:
-	@echo "$(GREEN)Logs du service $(SERVICE_NAME):$(NC)"
+	@echo "$(GREEN)$(SERVICE_NAME) service logs:$(NC)"
 	sudo journalctl -u $(SERVICE_NAME) -f
 
-# Vérification de l'état de santé
+# Health check
 health:
-	@echo "$(GREEN)Vérification de l'état de santé...$(NC)"
-	@curl -s http://localhost:9106/health | python3 -m json.tool || echo "$(RED)Service non accessible$(NC)"
+	@echo "$(GREEN)Health check...$(NC)"
+	@curl -s http://localhost:9106/health | python3 -m json.tool || echo "$(RED)Service not accessible$(NC)"
 	@echo ""
-	@curl -s http://localhost:9106/ready | python3 -m json.tool || echo "$(RED)Service pas prêt$(NC)"
+	@curl -s http://localhost:9106/ready | python3 -m json.tool || echo "$(RED)Service not ready$(NC)"
 
-# Configuration de monitoring
+# Monitoring configuration
 monitoring:
-	@echo "$(GREEN)URLs de monitoring:$(NC)"
-	@echo "Métriques Prometheus: http://localhost:9105/metrics"
-	@echo "Health check:        http://localhost:9106/health"
-	@echo "Readiness probe:     http://localhost:9106/ready"
-	@echo "Liveness probe:      http://localhost:9106/live"
+	@echo "$(GREEN)Monitoring URLs:$(NC)"
+	@echo "Prometheus metrics: http://localhost:9105/metrics"
+	@echo "Health check:       http://localhost:9106/health"
+	@echo "Readiness probe:    http://localhost:9106/ready"
+	@echo "Liveness probe:     http://localhost:9106/live"
 
-# Installation complète (dev + service)
+# Complete installation (dev + service)
 install-all: dev service-install deploy service-start
-	@echo "$(GREEN)Installation complète terminée!$(NC)"
+	@echo "$(GREEN)Complete installation completed!$(NC)"
 	make monitoring
 
-# Mise à jour du service
+# Service update
 update: deploy service-restart
-	@echo "$(GREEN)Mise à jour terminée!$(NC)"
+	@echo "$(GREEN)Service update completed!$(NC)"
 	sleep 3
 	make health 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Configuration pour l'installation du package Douro.
+Configuration for Douro package installation.
 """
 
 from setuptools import setup, find_packages
@@ -11,7 +11,7 @@ with open('requirements.txt') as f:
 setup(
     name="douro",
     version="0.1.0",
-    description="Douro - Analyseur d'hébergement de sites web avec métriques Prometheus",
+    description="Douro - Web hosting infrastructure analyzer with Prometheus metrics export",
     author="Baptiste",
     author_email="baptiste@example.com",
     packages=find_packages(),

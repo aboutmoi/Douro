@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Script de déploiement Douro depuis GitHub
+# Douro deployment script from GitHub
 # Usage: curl -fsSL https://raw.githubusercontent.com/aboutmoi/Douro/main/scripts/deploy-from-github.sh | bash
-# Ou: wget -qO- https://raw.githubusercontent.com/aboutmoi/Douro/main/scripts/deploy-from-github.sh | bash
+# Or: wget -qO- https://raw.githubusercontent.com/aboutmoi/Douro/main/scripts/deploy-from-github.sh | bash
 
 set -euo pipefail
 
@@ -11,14 +11,14 @@ GITHUB_REPO="https://github.com/aboutmoi/Douro.git"
 INSTALL_DIR="/tmp/douro-deploy-$(date +%s)"
 LOGFILE="/tmp/douro-github-install.log"
 
-# Couleurs pour l'affichage
+# Colors for display
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Fonctions utilitaires
+# Utility functions
 log() {
     echo -e "${GREEN}[$(date +'%H:%M:%S')]${NC} $1" | tee -a "$LOGFILE"
 }
@@ -32,123 +32,123 @@ log_warn() {
 }
 
 error_exit() {
-    echo -e "${RED}[$(date +'%H:%M:%S')] ERREUR:${NC} $1" | tee -a "$LOGFILE"
-    echo -e "${RED}Consultez les logs: $LOGFILE${NC}"
+    echo -e "${RED}[$(date +'%H:%M:%S')] ERROR:${NC} $1" | tee -a "$LOGFILE"
+    echo -e "${RED}Check logs: $LOGFILE${NC}"
     exit 1
 }
 
-# Bannière de démarrage
+# Startup banner
 show_banner() {
     echo -e "${BLUE}"
     echo "=============================================="
-    echo "   🚀 DÉPLOIEMENT DOURO DEPUIS GITHUB"
+    echo "   🚀 DOURO DEPLOYMENT FROM GITHUB"
     echo "=============================================="
     echo -e "${NC}"
     echo "📍 Repository: $GITHUB_REPO"
     echo "📋 Logs: $LOGFILE"
-    echo "🕒 Démarrage: $(date)"
+    echo "🕒 Started: $(date)"
     echo ""
 }
 
-# Vérification des prérequis
+# Prerequisites check
 check_prerequisites() {
-    log "Vérification des prérequis..."
+    log "Checking prerequisites..."
     
-    # Vérifier que c'est Linux
+    # Check that it's Linux
     if [[ "$(uname)" != "Linux" ]]; then
-        error_exit "Ce script nécessite Linux"
+        error_exit "This script requires Linux"
     fi
     
-    # Vérifier si on est root
+    # Check if running as root
     if [[ $EUID -eq 0 ]]; then
-        error_exit "Ne pas exécuter ce script en tant que root"
+        error_exit "Don't run this script as root"
     fi
     
-    # Vérifier sudo
+    # Check sudo
     if ! sudo -n true 2>/dev/null; then
-        log_info "Privilèges sudo requis..."
-        sudo true || error_exit "Privilèges sudo requis"
+        log_info "Sudo privileges required..."
+        sudo true || error_exit "Sudo privileges required"
     fi
     
-    # Vérifier git
+    # Check git
     if ! command -v git >/dev/null 2>&1; then
-        log_info "Installation de git..."
-        sudo apt update && sudo apt install -y git || error_exit "Impossible d'installer git"
+        log_info "Installing git..."
+        sudo apt update && sudo apt install -y git || error_exit "Cannot install git"
     fi
     
-    log "✓ Prérequis validés"
+    log "✓ Prerequisites validated"
 }
 
-# Clonage du repository
+# Repository cloning
 clone_repository() {
-    log "Clonage du repository Douro depuis GitHub..."
+    log "Cloning Douro repository from GitHub..."
     
-    # Nettoyer le répertoire s'il existe
+    # Clean directory if it exists
     if [[ -d "$INSTALL_DIR" ]]; then
         rm -rf "$INSTALL_DIR"
     fi
     
-    # Cloner le repository
-    git clone "$GITHUB_REPO" "$INSTALL_DIR" || error_exit "Échec du clonage du repository"
+    # Clone repository
+    git clone "$GITHUB_REPO" "$INSTALL_DIR" || error_exit "Repository cloning failed"
     
-    cd "$INSTALL_DIR" || error_exit "Impossible d'accéder au répertoire cloné"
+    cd "$INSTALL_DIR" || error_exit "Cannot access cloned directory"
     
-    log "✓ Repository cloné dans $INSTALL_DIR"
+    log "✓ Repository cloned to $INSTALL_DIR"
 }
 
 # Installation
 install_douro() {
-    log "Lancement de l'installation automatique de Douro..."
+    log "Starting Douro automatic installation..."
     
-    # Rendre le script exécutable
-    chmod +x scripts/deploy-vm-safe.sh || error_exit "Impossible de rendre le script exécutable"
+    # Make script executable
+    chmod +x scripts/deploy-vm-safe.sh || error_exit "Cannot make script executable"
     
-    # Lancer l'installation
-    ./scripts/deploy-vm-safe.sh || error_exit "Échec de l'installation Douro"
+    # Run installation
+    ./scripts/deploy-vm-safe.sh || error_exit "Douro installation failed"
     
-    log "✓ Installation Douro terminée"
+    log "✓ Douro installation completed"
 }
 
-# Nettoyage
+# Cleanup
 cleanup() {
-    log "Nettoyage des fichiers temporaires..."
+    log "Cleaning temporary files..."
     
     if [[ -d "$INSTALL_DIR" ]]; then
         rm -rf "$INSTALL_DIR"
-        log "✓ Répertoire temporaire supprimé"
+        log "✓ Temporary directory removed"
     fi
 }
 
-# Affichage du résumé final
+# Final summary display
 show_summary() {
     echo ""
     echo -e "${GREEN}=============================================="
-    echo "   ✅ DÉPLOIEMENT RÉUSSI !"
+    echo "   ✅ DEPLOYMENT SUCCESSFUL!"
     echo -e "===============================================${NC}"
     echo ""
-    echo "🎯 Douro a été installé depuis GitHub"
+    echo "🎯 Douro has been installed from GitHub"
     echo "📱 Source: $GITHUB_REPO"
     echo ""
-    echo "📊 URLs de monitoring :"
-    echo "  • Métriques: http://$(hostname -I | awk '{print $1}'):9105/metrics"
-    echo "  • Health:    http://$(hostname -I | awk '{print $1}'):9106/health"
+    echo "📊 Monitoring URLs:"
+    echo "  • Metrics: http://$(hostname -I | awk '{print $1}'):9105/metrics"
+    echo "  • Health:  http://$(hostname -I | awk '{print $1}'):9106/health"
     echo ""
-    echo "🔧 Commandes utiles :"
-    echo "  • Statut:     sudo systemctl status douro"
-    echo "  • Logs:       sudo journalctl -u douro -f"
-    echo "  • Redémarrer: sudo systemctl restart douro"
+    echo "🔧 Useful commands:"
+    echo "  • Status:   sudo systemctl status douro"
+    echo "  • Logs:     sudo journalctl -u douro -f"
+    echo "  • Restart:  sudo systemctl restart douro"
     echo ""
     echo "📁 Configuration: /opt/douro/config.production.json"
-    echo "📋 Logs d'installation: $LOGFILE"
+    echo "📋 Installation logs: $LOGFILE"
     echo ""
-    echo -e "${BLUE}🎉 Déploiement terminé avec succès !${NC}"
+    echo -e "${BLUE}🎉 Deployment completed successfully!${NC}"
 }
 
-# Fonction principale
+# Main function
 main() {
     show_banner
     
-    # Rediriger tous les logs vers le fichier
+    # Redirect all logs to file
     exec 1> >(tee -a "$LOGFILE")
     exec 2> >(tee -a "$LOGFILE" >&2)
     
@@ -159,8 +159,8 @@ main() {
     show_summary
 }
 
-# Gestion des signaux pour le nettoyage
+# Signal handling for cleanup
 trap cleanup EXIT ERR
 
-# Lancement du script principal
+# Main script launch
 main "$@" 
