@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
-Script CLI Douro pour analyser l'hébergement d'un ou plusieurs sites web.
+Douro CLI script for analyzing hosting of one or more websites.
 
 Usage:
-    douro_analyzer.py [-j] [-o FILE] [-v] domaine [domaine ...]
-    douro_analyzer.py [-j] [-o FILE] [-v] --domains-file FILE
-    -j, --json       sortie JSON
-    -o, --output     écrire dans FILE
-    -v, --verbose    traces stderr
-    --domains-file   lire les domaines depuis un fichier (un par ligne)
+    python -m douro.douro_analyzer example.com
+    python -m douro.douro_analyzer example.com wikipedia.org
+    python -m douro.douro_analyzer --config config.json
+
+Performs complete analysis of domains including DNS, WHOIS, hosting detection, etc.
 """
 
 import argparse
@@ -21,7 +20,7 @@ from douro.core.analyzer import analyze_domains
 
 
 def setup_logging(verbose: bool = False) -> None:
-    """Configure le logging."""
+    """Configure logging."""
     level = logging.DEBUG if verbose else logging.WARNING
     logging.basicConfig(
         level=level,
@@ -31,68 +30,68 @@ def setup_logging(verbose: bool = False) -> None:
 
 def load_domains_from_file(filepath: str) -> List[str]:
     """
-    Charge les domaines depuis un fichier texte (un domaine par ligne).
+    Load domains from a text file (one domain per line).
     
     Args:
-        filepath: Chemin vers le fichier contenant les domaines
+        filepath: Path to file containing domains
         
     Returns:
-        Liste des domaines
+        List of domains
     """
     domains = []
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             for line in f:
                 domain = line.strip()
-                if domain and not domain.startswith('#'):  # Ignorer les lignes vides et commentaires
+                if domain and not domain.startswith('#'):  # Ignore empty lines and comments
                     domains.append(domain)
     except IOError as e:
-        logging.error(f"Impossible de lire le fichier de domaines {filepath}: {e}")
+        logging.error(f"Cannot read domains file {filepath}: {e}")
         sys.exit(1)
     
     return domains
 
 
 def parse_args() -> argparse.Namespace:
-    """Parse les arguments de la ligne de commande."""
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description='Douro - Analyse l\'hébergement de sites web.'
+        description='Douro - Analyze web hosting infrastructure.'
     )
     
-    # Groupe mutuellement exclusif pour les domaines
+    # Mutually exclusive group for domains
     domain_group = parser.add_mutually_exclusive_group(required=True)
     domain_group.add_argument(
         'domains',
         nargs='*',
-        help='Liste des domaines à analyser'
+        help='List of domains to analyze'
     )
     domain_group.add_argument(
         '--domains-file',
         type=str,
-        help='Fichier contenant les domaines à analyser (un par ligne)'
+        help='File containing domains to analyze (one per line)'
     )
     
     parser.add_argument(
         '-j', '--json',
         action='store_true',
-        help='Sortie au format JSON'
+        help='JSON output format'
     )
     parser.add_argument(
         '-o', '--output',
         type=str,
-        help='Fichier de sortie (par défaut: stdout)'
+        help='Output file (default: stdout)'
     )
     parser.add_argument(
         '-v', '--verbose',
         action='store_true',
-        help='Mode verbeux (logs détaillés)'
+        help='Verbose mode (detailed logs)'
     )
     
     return parser.parse_args()
 
 
 def output_text(domains_info: List, file: TextIO = sys.stdout) -> None:
-    """Affiche les résultats au format texte."""
+    """Display results in text format."""
     for info in domains_info:
         file.write(f"=== {info.domain} ===\n")
         file.write(f"DNS duration: {info.dns_resolve_duration:.3f}s\n")
@@ -129,39 +128,39 @@ def output_text(domains_info: List, file: TextIO = sys.stdout) -> None:
 
 
 def output_json(domains_info: List, file: TextIO = sys.stdout) -> None:
-    """Affiche les résultats au format JSON."""
+    """Display results in JSON format."""
     results = [info.to_dict() for info in domains_info]
     json.dump(results, file, indent=2)
     file.write("\n")
 
 
 def main() -> int:
-    """Fonction principale."""
+    """Main function."""
     args = parse_args()
     setup_logging(args.verbose)
     
-    # Déterminer la liste des domaines
+    # Determine domain list
     if args.domains_file:
         domains = load_domains_from_file(args.domains_file)
-        logging.debug(f"Douro - Domaines chargés depuis {args.domains_file}: {len(domains)} domaines")
+        logging.debug(f"Douro - Domains loaded from {args.domains_file}: {len(domains)} domains")
     else:
         domains = args.domains
-        logging.debug(f"Douro - Domaines en arguments: {domains}")
+        logging.debug(f"Douro - Domains from arguments: {domains}")
     
     if not domains:
-        logging.error("Aucun domaine à analyser")
+        logging.error("No domains to analyze")
         return 1
     
-    logging.debug(f"Douro - Analyse des domaines: {domains}")
+    logging.debug(f"Douro - Analyzing domains: {domains}")
     domains_info = analyze_domains(domains)
     
-    # Ouvrir le fichier de sortie si spécifié
+    # Open output file if specified
     output_file = sys.stdout
     if args.output:
         try:
             output_file = open(args.output, 'w', encoding='utf-8')
         except IOError as e:
-            logging.error(f"Impossible d'ouvrir le fichier de sortie: {e}")
+            logging.error(f"Cannot open output file: {e}")
             return 1
     
     try:

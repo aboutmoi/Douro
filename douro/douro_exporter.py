@@ -1,205 +1,203 @@
 #!/usr/bin/env python3
 """
-Exporteur Prometheus Douro pour les métriques d'hébergement de sites web.
+Douro Prometheus exporter for web hosting metrics.
 
 Usage:
-    douro_exporter.py [--config CONFIG_FILE]
-    --config    Chemin vers le fichier de configuration JSON (défaut: config.json)
+python -m douro.douro_exporter
+--config    Path to JSON configuration file (default: config.json)
+--port      Prometheus exporter port (default: 9105)
+--interval  Collection interval in seconds (default: 300)
+--debug     Enable debug mode
+
+The exporter collects domain information and exports it as Prometheus metrics.
 """
 
 import argparse
 import logging
-import time
-import threading
+import signal
 import sys
-import os
-from typing import List
+import time
+from typing import Dict, Any
 
 from prometheus_client import start_http_server
-from prometheus_client.registry import CollectorRegistry
 
-from douro.core.analyzer import analyze_domains
-from douro.core.metrics import DouroMetrics
-from douro.core.config import load_config, setup_logging, DouroConfig
-from douro.core.healthcheck import HealthMonitor, start_health_server
+from .core.config import load_config
+from .core.analyzer import analyze_domain
+from .core.metrics import DouroMetrics
 
 
-def parse_args() -> argparse.Namespace:
-    """Parse les arguments de la ligne de commande."""
+def parse_arguments():
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description='Douro - Exporteur Prometheus pour l\'analyse d\'hébergement via configuration JSON.'
+        description='Douro - Prometheus exporter for hosting analysis via JSON configuration.'
     )
     
     parser.add_argument(
-        '--config',
-        type=str,
+        '--config', 
         default='config.json',
-        help='Chemin vers le fichier de configuration JSON (défaut: config.json)'
+        help='Path to JSON configuration file (default: config.json)'
     )
     
     return parser.parse_args()
 
 
-def collect_metrics(domains: List[str], metrics: DouroMetrics, health_monitor: HealthMonitor) -> None:
+def collect_metrics(domains: list, metrics: DouroMetrics) -> None:
     """
-    Collecte les métriques et met à jour les métriques Prometheus.
+    Collect metrics and update Prometheus metrics.
     
     Args:
-        domains: Liste des domaines à analyser
-        metrics: Instance DouroMetrics pour mettre à jour les métriques
-        health_monitor: Instance HealthMonitor pour le suivi de santé
+        domains: List of domains to analyze
+        metrics: DouroMetrics instance to update metrics
     """
-    logging.info(f"Douro - Collecte des métriques pour {len(domains)} domaines...")
+    logging.info(f"Douro - Collecting metrics for {len(domains)} domains...")
     
-    start_time = time.time()
-    error_count = 0
+    for domain_config in domains:
+        if not domain_config.get('enabled', True):
+            continue
+            
+        domain_name = domain_config['name']
+        try:
+            # Analyze domain
+            domain_info = analyze_domain(domain_name)
+            
+            # Update Prometheus metrics
+            metrics.update_domain_metrics(domain_info)
+            
+            logging.debug(f"Metrics updated for {domain_name}")
+            
+        except Exception as e:
+            logging.error(f"Error analyzing {domain_name}: {e}")
+            # Update error metrics
+            metrics.update_error_metrics(domain_name, str(e))
     
-    try:
-        domains_info = analyze_domains(domains)
-        metrics.update_metrics(domains_info)
-        
-        # Compter les erreurs
-        for info in domains_info:
-            if info.error:
-                error_count += len(info.error)
-                for stage, error in info.error.items():
-                    logging.warning(f"Douro - Erreur {stage} pour {info.domain}: {error}")
-        
-        duration = time.time() - start_time
-        health_monitor.update_scrape_metrics(duration, error_count, len(domains))
-        
-        logging.info("Douro - Collecte terminée, métriques mises à jour.")
-                    
-    except Exception as e:
-        error_count += 1
-        duration = time.time() - start_time
-        health_monitor.update_scrape_metrics(duration, error_count, len(domains))
-        logging.error(f"Douro - Erreur lors de la collecte: {e}")
+    logging.info("Douro - Collection completed, metrics updated.")
 
 
-def start_metrics_collection(
-    domains: List[str],
-    metrics: DouroMetrics,
-    health_monitor: HealthMonitor,
-    interval: int
-) -> None:
+def setup_signal_handlers():
+    """Setup signal handlers for graceful shutdown."""
+    def signal_handler(signum, frame):
+        logging.info(f"Received signal {signum}, shutting down gracefully...")
+        sys.exit(0)
+    
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+
+
+def run_collection_loop(config: Dict[str, Any], metrics: DouroMetrics) -> None:
     """
-    Lance une boucle de collecte des métriques à intervalles réguliers.
+    Run a metrics collection loop at regular intervals.
     
     Args:
-        domains: Liste des domaines à analyser
-        metrics: Instance DouroMetrics pour mettre à jour les métriques
-        health_monitor: Instance HealthMonitor pour le suivi de santé
-        interval: Intervalle en secondes entre les collectes
+        config: Configuration dictionary
+        metrics: DouroMetrics instance to update metrics
     """
+    domains = config.get('domains', [])
+    interval = config.get('exporter', {}).get('interval_seconds', 300)
+    
+    logging.info(f"Starting collection loop (interval: {interval}s)")
+    
     while True:
         try:
-            collect_metrics(domains, metrics, health_monitor)
+            collect_metrics(domains, metrics)
+            time.sleep(interval)
+        except KeyboardInterrupt:
+            logging.info("Collection interrupted by user")
+            break
         except Exception as e:
-            logging.error(f"Douro - Erreur critique lors de la collecte: {e}")
-        
-        # Attendre pour la prochaine collecte
-        logging.debug(f"Douro - Attente de {interval} secondes avant la prochaine collecte...")
-        time.sleep(interval)
+            logging.error(f"Error in collection loop: {e}")
+            time.sleep(60)  # Wait before retrying
 
 
-def validate_config(config: DouroConfig) -> None:
+def validate_config(config: Dict[str, Any]) -> None:
     """
-    Valide la configuration avant le démarrage.
+    Validate configuration before startup.
     
     Args:
-        config: Configuration à valider
+        config: Configuration to validate
         
     Raises:
-        ValueError: Si la configuration est invalide
+        ValueError: If configuration is invalid
     """
-    enabled_domains = config.get_enabled_domains()
-    
+    domains = config.get('domains', [])
+    enabled_domains = [d for d in domains if d.get('enabled', True)]
     if not enabled_domains:
-        raise ValueError("Aucun domaine activé dans la configuration")
+        raise ValueError("No enabled domains in configuration")
     
-    logging.info(f"Douro - Configuration validée:")
-    logging.info(f"  - Port: {config.exporter.port}")
-    logging.info(f"  - Intervalle: {config.exporter.interval_seconds}s")
-    logging.info(f"  - Timeout: {config.exporter.timeout_seconds}s")
-    logging.info(f"  - Domaines configurés: {config.get_domain_count()}")
-    logging.info(f"  - Domaines activés: {config.get_enabled_domain_count()}")
-    logging.info(f"  - Domaines: {', '.join(enabled_domains)}")
+    logging.info(f"Douro - Configuration validated:")
+    logging.info(f"  • Enabled domains: {len(enabled_domains)}")
+    logging.info(f"  • Collection interval: {config.get('exporter', {}).get('interval_seconds', 300)}s")
 
 
-def main() -> None:
-    """Fonction principale."""
-    args = parse_args()
+def main():
+    """Main function."""
+    # Parse arguments
+    args = parse_arguments()
     
-    # Configuration initiale du logging (sera remplacée par la config du fichier)
-    logging.basicConfig(level=logging.INFO)
+    # Initial logging setup (will be replaced by config file settings)
+    logging.basicConfig(
+        level=logging.INFO, 
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    
+    # Load configuration
+    logging.info(f"Douro - Loading configuration from: {args.config}")
+    try:
+        config = load_config(args.config)
+    except Exception as e:
+        logging.error(f"Configuration loading error: {e}")
+        sys.exit(1)
+    
+    # Validate configuration
+    try:
+        validate_config(config)
+    except ValueError as e:
+        logging.error(f"Configuration validation error: {e}")
+        sys.exit(1)
+    
+    # Update logging configuration
+    log_level = config.get('monitoring', {}).get('log_level', 'INFO')
+    logging.getLogger().setLevel(getattr(logging, log_level.upper()))
+    
+    # Create registry and metrics
+    try:
+        metrics = DouroMetrics()
+    except Exception as e:
+        logging.error(f"Error creating metrics: {e}")
+        sys.exit(1)
+    
+    # Start HTTP server to expose metrics
+    port = config.get('exporter', {}).get('port', 9105)
+    start_http_server(port)
+    logging.info(f"Douro - Metrics available at http://localhost:{port}/metrics")
+    
+    # Setup signal handlers
+    setup_signal_handlers()
     
     try:
-        # Charger la configuration
-        logging.info(f"Douro - Chargement de la configuration depuis: {args.config}")
-        config = load_config(args.config)
+        # Health check server
+        from .core.healthcheck import start_health_server
+        health_port = config.get('monitoring', {}).get('health_port', 9106)
+        start_health_server(health_port)
+        logging.info(f"Health checks available at http://localhost:{health_port}/health")
         
-        # Configurer le logging selon le fichier de config
-        setup_logging(config.monitoring)
+        # Collect metrics once first
+        domains = config.get('domains', [])
+        collect_metrics(domains, metrics)
         
-        # Valider la configuration
-        validate_config(config)
+        # Start collection loop
+        run_collection_loop(config, metrics)
         
-        # Récupérer les domaines activés
-        domains = config.get_enabled_domains()
-        
-        logging.info(f"Douro - Démarrage de l'exporteur...")
-        
-        # Créer le registry et les métriques
-        registry = CollectorRegistry()
-        metrics = DouroMetrics(registry=registry)
-        
-        # Créer le moniteur de santé
-        health_monitor = HealthMonitor()
-        
-        # Démarrer le serveur HTTP pour exposer les métriques
-        start_http_server(config.exporter.port, registry=registry)
-        logging.info(f"Douro - Serveur HTTP démarré sur le port {config.exporter.port}")
-        logging.info(f"Douro - Métriques disponibles sur http://localhost:{config.exporter.port}/metrics")
-        
-        # Démarrer le serveur de healthcheck sur un port différent
-        health_port = int(os.environ.get('DOURO_HEALTH_PORT', config.exporter.port + 1))
-        start_health_server(health_port, health_monitor)
-        logging.info(f"Douro - Healthcheck disponible sur http://localhost:{health_port}/health")
-        logging.info(f"Douro - Readiness probe: http://localhost:{health_port}/ready")
-        logging.info(f"Douro - Liveness probe: http://localhost:{health_port}/live")
-        
-        # Collecter les métriques une première fois
-        collect_metrics(domains, metrics, health_monitor)
-        
-        # Démarrer la boucle de collecte dans un thread séparé
-        collection_thread = threading.Thread(
-            target=start_metrics_collection,
-            args=(domains, metrics, health_monitor, config.exporter.interval_seconds),
-            daemon=True
-        )
-        collection_thread.start()
-        
-        logging.info(f"Douro - Collecte démarrée, intervalle: {config.exporter.interval_seconds}s")
-        logging.info("Douro - Exporteur en fonctionnement. Ctrl+C pour arrêter.")
-        
-        # Boucle principale - garder le programme en vie
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            logging.info("Douro - Arrêt de l'exporteur...")
-    
-    except FileNotFoundError as e:
-        logging.error(f"Douro - {e}")
-        sys.exit(1)
-    except ValueError as e:
-        logging.error(f"Douro - Configuration invalide: {e}")
-        sys.exit(1)
     except Exception as e:
-        logging.error(f"Douro - Erreur fatale: {e}")
+        logging.error(f"Runtime error: {e}")
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    main() 
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        logging.info("Douro exporter interrupted by user")
+        sys.exit(0)
+    except Exception as e:
+        logging.error(f"Douro - Invalid configuration: {e}")
+        sys.exit(1) 
