@@ -61,50 +61,50 @@ class RegionDetector:
             },
             # OVH
             'ovh': {
-                'gra7': [r'gra\d*', r'gravelines', r'gra7', r'\.gra-', r'gra-g\d+'],
+                'gra7': [r'gra\d*', r'gravelines', r'gra7', r'\.gra-', r'gra-g\d+', r'be\d+\.gra-g\d+', r'gra-g\d+-nc\d+', r'\.gra\.', r'-gra\.'],
                 'gra9': [r'gra9', r'gravelines9'],
-                'rbx8': [r'rbx\d*', r'roubaix', r'rbx8', r'\.rbx-'],
-                'sbg5': [r'sbg\d*', r'strasbourg', r'sbg5', r'\.sbg-'],
-                'bhs5': [r'bhs\d*', r'beauharnois', r'montreal', r'bhs5', r'\.bhs-'],
-                'waw1': [r'waw\d*', r'warsaw', r'poland', r'waw1', r'\.waw-'],
-                'lon1': [r'lon\d*', r'london', r'lon1', r'\.lon-'],
-                'fra1': [r'fra\d*', r'frankfurt', r'fra1', r'\.fra-'],
-                'sin1': [r'sin\d*', r'singapore', r'sin1', r'\.sin-'],
-                'syd1': [r'syd\d*', r'sydney', r'australia', r'syd1', r'\.syd-'],
+                'rbx8': [r'rbx\d*', r'roubaix', r'rbx8', r'\.rbx-', r'rbx-g\d+', r'\.rbx\.', r'-rbx\.'],
+                'sbg5': [r'sbg\d*', r'strasbourg', r'sbg5', r'\.sbg-', r'sbg-g\d+', r'\.sbg\.', r'-sbg\.'],
+                'bhs5': [r'bhs\d*', r'beauharnois', r'montreal', r'bhs5', r'\.bhs-', r'bhs-g\d+', r'\.bhs\.', r'-bhs\.'],
+                'waw1': [r'waw\d*', r'warsaw', r'poland', r'waw1', r'\.waw-', r'waw-g\d+', r'\.waw\.', r'-waw\.'],
+                'lon1': [r'lon\d*', r'london', r'lon1', r'\.lon-', r'lon-g\d+', r'\.lon\.', r'-lon\.'],
+                'fra1': [r'fra\d*', r'frankfurt', r'fra1', r'\.fra-', r'fra-g\d+', r'\.fra\.', r'-fra\.'],
+                'sin1': [r'sin\d*', r'singapore', r'sin1', r'\.sin-', r'sin-g\d+', r'\.sin\.', r'-sin\.'],
+                'syd1': [r'syd\d*', r'sydney', r'australia', r'syd1', r'\.syd-', r'syd-g\d+', r'\.syd\.', r'-syd\.'],
             },
-            # Cloudflare
+            # Cloudflare - amélioré avec codes IATA et patterns IP
             'cloudflare': {
-                'ams': [r'ams\d*', r'amsterdam'],
-                'atl': [r'atl\d*', r'atlanta'],
-                'bom': [r'bom\d*', r'mumbai'],
-                'cdg': [r'cdg\d*', r'paris'],
-                'dfw': [r'dfw\d*', r'dallas'],
-                'fra': [r'fra\d*', r'frankfurt'],
-                'iad': [r'iad\d*', r'washington', r'ashburn'],
-                'lax': [r'lax\d*', r'los.angeles'],
-                'lhr': [r'lhr\d*', r'london'],
-                'nrt': [r'nrt\d*', r'tokyo'],
-                'ord': [r'ord\d*', r'chicago'],
-                'sea': [r'sea\d*', r'seattle'],
-                'sin': [r'sin\d*', r'singapore'],
-                'syd': [r'syd\d*', r'sydney'],
+                'ams': [r'ams\d*', r'amsterdam', r'\.ams\.', r'-ams\.', r'ams\d+\.cloudflare'],
+                'atl': [r'atl\d*', r'atlanta', r'\.atl\.', r'-atl\.', r'atl\d+\.cloudflare'],
+                'bom': [r'bom\d*', r'mumbai', r'\.bom\.', r'-bom\.', r'bom\d+\.cloudflare'],
+                'cdg': [r'cdg\d*', r'paris', r'\.cdg\.', r'-cdg\.', r'cdg\d+\.cloudflare'],
+                'dfw': [r'dfw\d*', r'dallas', r'\.dfw\.', r'-dfw\.', r'dfw\d+\.cloudflare'],
+                'fra': [r'fra\d*', r'frankfurt', r'\.fra\.', r'-fra\.', r'fra\d+\.cloudflare'],
+                'iad': [r'iad\d*', r'washington', r'ashburn', r'\.iad\.', r'-iad\.', r'iad\d+\.cloudflare'],
+                'lax': [r'lax\d*', r'los.angeles', r'\.lax\.', r'-lax\.', r'lax\d+\.cloudflare'],
+                'lhr': [r'lhr\d*', r'london', r'\.lhr\.', r'-lhr\.', r'lhr\d+\.cloudflare'],
+                'nrt': [r'nrt\d*', r'tokyo', r'\.nrt\.', r'-nrt\.', r'nrt\d+\.cloudflare'],
+                'ord': [r'ord\d*', r'chicago', r'\.ord\.', r'-ord\.', r'ord\d+\.cloudflare'],
+                'sea': [r'sea\d*', r'seattle', r'\.sea\.', r'-sea\.', r'sea\d+\.cloudflare'],
+                'sin': [r'sin\d*', r'singapore', r'\.sin\.', r'-sin\.', r'sin\d+\.cloudflare'],
+                'syd': [r'syd\d*', r'sydney', r'\.syd\.', r'-syd\.', r'syd\d+\.cloudflare'],
             },
-            # Akamai
+            # Akamai - amélioré avec patterns de domaines Akamai
             'akamai': {
-                'ams': [r'ams\d*', r'amsterdam'],
-                'atl': [r'atl\d*', r'atlanta'],
-                'bos': [r'bos\d*', r'boston'],
-                'cdg': [r'cdg\d*', r'paris'],
-                'dfw': [r'dfw\d*', r'dallas'],
-                'fra': [r'fra\d*', r'frankfurt'],
-                'lax': [r'lax\d*', r'los.angeles'],
-                'lhr': [r'lhr\d*', r'london'],
-                'mia': [r'mia\d*', r'miami'],
-                'nrt': [r'nrt\d*', r'tokyo'],
-                'ord': [r'ord\d*', r'chicago'],
-                'sea': [r'sea\d*', r'seattle'],
-                'sin': [r'sin\d*', r'singapore'],
-                'syd': [r'syd\d*', r'sydney'],
+                'ams': [r'ams\d*', r'amsterdam', r'\.ams\.', r'-ams\.', r'ams\d+\.akamai', r'\.akam\.net.*ams'],
+                'atl': [r'atl\d*', r'atlanta', r'\.atl\.', r'-atl\.', r'atl\d+\.akamai', r'\.akam\.net.*atl'],
+                'bos': [r'bos\d*', r'boston', r'\.bos\.', r'-bos\.', r'bos\d+\.akamai', r'\.akam\.net.*bos'],
+                'cdg': [r'cdg\d*', r'paris', r'\.cdg\.', r'-cdg\.', r'cdg\d+\.akamai', r'\.akam\.net.*cdg'],
+                'dfw': [r'dfw\d*', r'dallas', r'\.dfw\.', r'-dfw\.', r'dfw\d+\.akamai', r'\.akam\.net.*dfw'],
+                'fra': [r'fra\d*', r'frankfurt', r'\.fra\.', r'-fra\.', r'fra\d+\.akamai', r'\.akam\.net.*fra'],
+                'lax': [r'lax\d*', r'los.angeles', r'\.lax\.', r'-lax\.', r'lax\d+\.akamai', r'\.akam\.net.*lax'],
+                'lhr': [r'lhr\d*', r'london', r'\.lhr\.', r'-lhr\.', r'lhr\d+\.akamai', r'\.akam\.net.*lhr'],
+                'mia': [r'mia\d*', r'miami', r'\.mia\.', r'-mia\.', r'mia\d+\.akamai', r'\.akam\.net.*mia'],
+                'nrt': [r'nrt\d*', r'tokyo', r'\.nrt\.', r'-nrt\.', r'nrt\d+\.akamai', r'\.akam\.net.*nrt'],
+                'ord': [r'ord\d*', r'chicago', r'\.ord\.', r'-ord\.', r'ord\d+\.akamai', r'\.akam\.net.*ord'],
+                'sea': [r'sea\d*', r'seattle', r'\.sea\.', r'-sea\.', r'sea\d+\.akamai', r'\.akam\.net.*sea'],
+                'sin': [r'sin\d*', r'singapore', r'\.sin\.', r'-sin\.', r'sin\d+\.akamai', r'\.akam\.net.*sin'],
+                'syd': [r'syd\d*', r'sydney', r'\.syd\.', r'-syd\.', r'syd\d+\.akamai', r'\.akam\.net.*syd'],
             },
             # Hetzner
             'hetzner': {
@@ -218,51 +218,158 @@ class RegionDetector:
             }
         }
     
-    def detect_via_ip_geolocation(self, ip: str) -> Tuple[Optional[str], Optional[str]]:
+    def detect_via_ip_geolocation(self, target: str) -> Tuple[Optional[str], Optional[str]]:
         """
-        Détecte la région via géolocalisation IP (ip-api.com).
-        
-        Args:
-            ip: Adresse IP à analyser
-            
-        Returns:
-            Tuple (provider, region) basé sur la géolocalisation
+        Détecte le provider et la région via géolocalisation IP et WHOIS.
+        Plus rapide mais moins précis que MTR.
         """
         try:
-            # Utiliser l'API gratuite ip-api.com
-            response = requests.get(
-                f"http://ip-api.com/json/{ip}?fields=status,org,isp,as,country,countryCode,regionName,city",
-                timeout=5
-            )
+            # Résoudre l'IP si c'est un nom de domaine
+            if not self._is_ip_address(target):
+                ip = socket.gethostbyname(target)
+            else:
+                ip = target
             
-            if response.status_code == 200:
-                data = response.json()
-                if data.get('status') == 'success':
-                    org = data.get('org', '').lower()
-                    isp = data.get('isp', '').lower()
-                    as_info = data.get('as', '').lower()
-                    country_code = data.get('countryCode', '')
-                    region_name = data.get('regionName', '')
-                    city = data.get('city', '')
-                    
-                    # Identifier le provider
-                    provider = self._identify_provider_from_org(org + ' ' + isp + ' ' + as_info)
-                    
-                    if provider:
-                        # Essayer de déduire la région
-                        region = self._deduce_region_from_location(provider, country_code, region_name, city)
-                        if region:
-                            return provider, region
-                        
-                        # Fallback sur le mapping pays -> région
-                        if provider in self.country_to_region_mapping and country_code in self.country_to_region_mapping[provider]:
-                            return provider, self.country_to_region_mapping[provider][country_code]
-                    
-                    return provider, None
+            # Utiliser ipwhois pour obtenir les informations
+            obj = IPWhois(ip)
+            
+            try:
+                results = obj.lookup_rdap()
+            except Exception:
+                try:
+                    results = obj.lookup_whois()
+                except Exception:
+                    return None, None
+            
+            asn = results.get('asn')
+            asn_org = results.get('asn_description', '').lower()
+            country = results.get('country')
+            
+            # Si pas de country direct, essayer d'extraire depuis l'organisation
+            if not country and asn_org:
+                # Patterns courants : "OVH, FR", "Amazon, US", "Microsoft, US", etc.
+                if ', fr' in asn_org or ' fr' in asn_org:
+                    country = 'FR'
+                elif ', us' in asn_org or ' us' in asn_org:
+                    country = 'US'
+                elif ', de' in asn_org or ' de' in asn_org:
+                    country = 'DE'
+                elif ', gb' in asn_org or ' gb' in asn_org:
+                    country = 'GB'
+                elif ', ca' in asn_org or ' ca' in asn_org:
+                    country = 'CA'
+                elif ', sg' in asn_org or ' sg' in asn_org:
+                    country = 'SG'
+                elif ', jp' in asn_org or ' jp' in asn_org:
+                    country = 'JP'
+                elif ', au' in asn_org or ' au' in asn_org:
+                    country = 'AU'
+                elif ', nl' in asn_org or ' nl' in asn_org:
+                    country = 'NL'
+                elif ', be' in asn_org or ' be' in asn_org:
+                    country = 'BE'
+                elif ', ie' in asn_org or ' ie' in asn_org:
+                    country = 'IE'
+            
+            # Détecter le provider basé sur l'ASN et l'organisation
+            provider = None
+            region = None
+            
+            # AWS
+            if '16509' in str(asn) or 'amazon' in asn_org or 'aws' in asn_org:
+                provider = 'aws'
+                if country in self.country_to_region_mapping.get('aws', {}):
+                    region = self.country_to_region_mapping['aws'][country]
+            
+            # Google Cloud
+            elif '15169' in str(asn) or 'google' in asn_org:
+                provider = 'gcp'
+                if country in self.country_to_region_mapping.get('gcp', {}):
+                    region = self.country_to_region_mapping['gcp'][country]
+            
+            # Microsoft Azure
+            elif '8075' in str(asn) or 'microsoft' in asn_org:
+                provider = 'azure'
+                if country in self.country_to_region_mapping.get('azure', {}):
+                    region = self.country_to_region_mapping['azure'][country]
+            
+            # OVH - amélioration avec détection des ranges IP
+            elif '16276' in str(asn) or 'ovh' in asn_org:
+                provider = 'ovh'
+                # Logique améliorée pour OVH
+                if country == 'FR':
+                    # Pour la France, analyser la plage IP pour distinguer GRA/RBX/SBG
+                    ip_parts = ip.split('.')
+                    if len(ip_parts) == 4:
+                        try:
+                            first_octet = int(ip_parts[0])
+                            second_octet = int(ip_parts[1])
+                            
+                            # Plages approximatives OVH (à affiner selon l'expérience)
+                            # 54.39.x.x semble être typiquement GRA
+                            if first_octet == 54 and second_octet == 39:
+                                region = 'gra7'  # Gravelines par défaut pour cette plage
+                            # 151.80.x.x typiquement RBX
+                            elif first_octet == 151 and second_octet == 80:
+                                region = 'rbx8'
+                            # 51.38.x.x typiquement SBG
+                            elif first_octet == 51 and second_octet == 38:
+                                region = 'sbg5'
+                            else:
+                                region = 'gra7'  # Défaut France
+                        except ValueError:
+                            region = 'gra7'
+                elif country == 'CA':
+                    region = 'bhs5'
+                elif country == 'GB':
+                    region = 'lon1'
+                elif country == 'DE':
+                    region = 'fra1'
+                elif country == 'PL':
+                    region = 'waw1'
+                elif country == 'SG':
+                    region = 'sin1'
+                elif country == 'AU':
+                    region = 'syd1'
+                else:
+                    region = None
+            
+            # Cloudflare
+            elif '13335' in str(asn) or 'cloudflare' in asn_org:
+                provider = 'cloudflare'
+                # Pour Cloudflare, pas de région spécifique via IP seule
+                region = None
+            
+            # Akamai
+            elif any(akamai_asn in str(asn) for akamai_asn in ['16625', '20940', '21342', '16702', '18717', '18680', '20189']) or 'akamai' in asn_org:
+                provider = 'akamai'
+                # Pour Akamai, pas de région spécifique via IP seule
+                region = None
+            
+            # Hetzner
+            elif '24940' in str(asn) or 'hetzner' in asn_org:
+                provider = 'hetzner'
+                if country == 'DE':
+                    region = 'fsn'  # Falkenstein par défaut
+                elif country == 'FI':
+                    region = 'hel'
+                elif country == 'US':
+                    region = 'ash'  # Ashburn
+                else:
+                    region = None
+            
+            # DigitalOcean
+            elif '14061' in str(asn) or 'digitalocean' in asn_org:
+                provider = 'digitalocean'
+                if country in self.country_to_region_mapping.get('digitalocean', {}):
+                    region = self.country_to_region_mapping['digitalocean'][country]
+            
+            logging.info(f"DEBUG GEO: {target} -> ASN={asn}, Org={asn_org}, Country={country}, Provider={provider}, Region={region}")
+            return provider, region
+            
         except Exception as e:
-            logging.debug(f"Géolocalisation IP échouée pour {ip}: {e}")
-        
-        return None, None
+            logging.debug(f"Erreur géolocalisation pour {target}: {e}")
+            return None, None
     
     def _identify_provider_from_org(self, org_text: str) -> Optional[str]:
         """Identifie le provider depuis les informations d'organisation."""
@@ -438,87 +545,149 @@ class RegionDetector:
         """
         hostnames = []
         
-        try:
-            # Essayer MTR (My Traceroute) - avec sudo maintenant que douro a les droits
-            cmd = [
-                'sudo', 'mtr', 
-                '-4',  # Force IPv4
-                '--report', 
-                '--report-cycles', '2', 
-                '--max-ttl', str(max_hops),
-                '-b',  # Show both hostnames and IPs
-                target
-            ]
-            
-            logging.info(f"DEBUG MTR: Commande pour {target}: {' '.join(cmd)}")
-            
-            result = subprocess.run(
-                cmd, 
-                capture_output=True, 
-                text=True, 
-                timeout=45
-            )
-            
-            logging.info(f"DEBUG MTR: Return code pour {target}: {result.returncode}")
-            logging.info(f"DEBUG MTR: Stdout length pour {target}: {len(result.stdout)} chars")
-            logging.info(f"DEBUG MTR: Stderr pour {target}: {result.stderr[:200]}")
-            
-            if result.returncode == 0:
-                logging.info(f"DEBUG MTR: Stdout échantillon pour {target}: {result.stdout[:300]}")
-                hostnames.extend(self._parse_mtr_output(result.stdout))
-                logging.info(f"DEBUG MTR: Hostnames parsés pour {target}: {hostnames}")
-            else:
-                # Fallback sur traceroute classique directement
-                logging.debug(f"MTR a échoué, fallback sur traceroute pour {target}")
-                return self.run_traceroute_fallback(target, max_hops)
+        # Essayer d'abord IPv4, puis IPv6 si IPv4 échoue
+        for ip_version in ['-4', '-6']:
+            try:
+                # Essayer MTR (My Traceroute) - avec sudo seulement si l'utilisateur douro
+                import getpass
+                current_user = getpass.getuser()
+                
+                if current_user == 'douro':
+                    cmd = [
+                        'sudo', 'mtr', 
+                        ip_version,  # IPv4 ou IPv6
+                        '--report', 
+                        '--report-cycles', '3',  # Plus de cycles pour plus de précision
+                        '--max-ttl', str(max_hops),
+                        '-b',  # Show both hostnames and IPs
+                        '--no-dns',  # Pas de résolution DNS pendant MTR pour plus de rapidité
+                        target
+                    ]
+                else:
+                    # Fallback sans sudo pour les tests
+                    cmd = [
+                        'mtr', 
+                        ip_version,  # IPv4 ou IPv6
+                        '--report', 
+                        '--report-cycles', '3',  # Plus de cycles pour plus de précision
+                        '--max-ttl', str(max_hops),
+                        '-b',  # Show both hostnames and IPs
+                        target  # Avec DNS pour avoir les hostnames
+                    ]
+                
+                logging.info(f"DEBUG MTR: Commande pour {target} ({ip_version}): {' '.join(cmd)}")
+                
+                result = subprocess.run(
+                    cmd, 
+                    capture_output=True, 
+                    text=True, 
+                    timeout=45
+                )
+                
+                logging.info(f"DEBUG MTR: Return code pour {target} ({ip_version}): {result.returncode}")
+                logging.info(f"DEBUG MTR: Stdout length pour {target}: {len(result.stdout)} chars")
+                
+                if result.returncode == 0 and result.stdout.strip():
+                    logging.info(f"DEBUG MTR: Stdout échantillon pour {target}: {result.stdout[:300]}")
+                    parsed_hostnames = self._parse_mtr_output_enhanced(result.stdout)
+                    logging.info(f"DEBUG MTR: Hostnames parsés pour {target} ({ip_version}): {parsed_hostnames}")
+                    
+                    if parsed_hostnames:
+                        hostnames.extend(parsed_hostnames)
+                        # Si on a trouvé des hostnames, on arrête d'essayer d'autres versions IP
+                        break
+                    
+            except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundError) as e:
+                logging.debug(f"Échec de MTR {ip_version} vers {target}: {e}")
+                continue
         
-        except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundError) as e:
-            logging.debug(f"Échec de MTR vers {target}: {e}")
-            # Fallback sur traceroute classique
+        # Si MTR n'a donné aucun résultat, fallback sur traceroute
+        if not hostnames:
+            logging.debug(f"MTR a échoué, fallback sur traceroute pour {target}")
             return self.run_traceroute_fallback(target, max_hops)
         
         return hostnames
 
-    def _parse_mtr_output(self, output: str) -> List[str]:
+    def _parse_mtr_output_enhanced(self, output: str) -> List[str]:
         """
-        Parse la sortie de MTR pour extraire les noms d'hôtes.
-        
-        Format typique MTR:
-        HOST: hostname                    Loss%   Snt   Last   Avg  Best  Wrst StDev
-          1.|-- router.example.com        0.0%     2    1.0   1.0   1.0   1.0   0.0
-          2.|-- 192.168.1.1              0.0%     2    5.0   5.0   5.0   5.0   0.0
+        Parse amélioré de la sortie de MTR pour extraire les noms d'hôtes et IPs.
+        Gère IPv4, IPv6 et différents formats de sortie MTR.
         """
         hostnames = []
         
         for line in output.split('\n'):
             line = line.strip()
-            if not line or 'HOST:' in line or 'Start:' in line:
+            if not line or 'HOST:' in line or 'Start:' in line or 'Keys:' in line:
                 continue
                 
-            # Format MTR: "  1.|-- hostname/IP   Loss%   ..."
-            match = re.match(r'\s*\d+\.\|\-\-\s+([^\s]+)', line)
-            if match:
-                hostname_or_ip = match.group(1)
+            # Formats MTR possibles:
+            # IPv4: "  1.|-- hostname.com (192.168.1.1)   0.0%     3    1.0   1.0   1.0   1.0   0.0"
+            # IPv4: "  1.|-- 192.168.1.1                 0.0%     3    1.0   1.0   1.0   1.0   0.0"
+            # IPv6: "  1.|-- 2001:db8::1                 0.0%     3    1.0   1.0   1.0   1.0   0.0"
+            # Nouveau format: "  1. hostname.com           0.0%     3    1.0   1.0   1.0   1.0   0.0"
+            # Format avec ???: "  2.|-- ???                       100.0     1    0.0   0.0   0.0   0.0   0.0"
+            
+            # Pattern pour capturer hostname ou IP après le numéro de saut
+            patterns = [
+                # Format classique: "1.|-- hostname.com (IP)" ou "1.|-- IP"
+                r'\s*\d+\.\|\-\-\s+([^\s\(]+)(?:\s+\([^)]+\))?',
+                # Format moderne: "1. hostname.com"
+                r'\s*\d+\.\s+([^\s]+)',
+            ]
+            
+            hostname_or_ip = None
+            for pattern in patterns:
+                match = re.match(pattern, line)
+                if match:
+                    hostname_or_ip = match.group(1)
+                    break
+            
+            if not hostname_or_ip:
+                continue
                 
-                # Ignorer les entrées vides ou les timeouts
-                if hostname_or_ip in ['???', '*', '0.0.0.0']:
-                    continue
-                
-                # Si c'est une IP, faire une résolution DNS inverse
-                if re.match(r'^\d+\.\d+\.\d+\.\d+$', hostname_or_ip):
-                    try:
-                        reversed_name = socket.gethostbyaddr(hostname_or_ip)[0]
-                        if reversed_name and '.' in reversed_name:
-                            hostnames.append(reversed_name.lower())
-                    except (socket.herror, socket.gaierror):
-                        # Pas de résolution inverse, on garde l'IP pour analyse
-                        hostnames.append(hostname_or_ip)
-                else:
-                    # C'est déjà un hostname
-                    if '.' in hostname_or_ip:
-                        hostnames.append(hostname_or_ip.lower())
+            # Ignorer les entrées vides, timeouts et wildcards
+            if hostname_or_ip in ['???', '*', '0.0.0.0', '(waiting', 'waiting', 'reply)']:
+                continue
+            
+            # Ignorer les adresses locales/privées non intéressantes
+            if hostname_or_ip.startswith(('192.168.', '10.', '172.16.', '172.17.', '172.18.', '172.19.', '172.20.', '172.21.', '172.22.', '172.23.', '172.24.', '172.25.', '172.26.', '172.27.', '172.28.', '172.29.', '172.30.', '172.31.', 'bbox.lan')):
+                continue
+            
+            # Traitement des IPs vs hostnames
+            if self._is_ip_address(hostname_or_ip):
+                # C'est une IP, essayer la résolution DNS inverse
+                try:
+                    reversed_name = socket.gethostbyaddr(hostname_or_ip)[0]
+                    if reversed_name and '.' in reversed_name and len(reversed_name) > 5:
+                        hostnames.append(reversed_name.lower())
+                        logging.debug(f"DEBUG: Résolution inverse {hostname_or_ip} -> {reversed_name}")
+                except (socket.herror, socket.gaierror, socket.timeout):
+                    # Pas de résolution inverse, on garde l'IP pour analyse ultérieure
+                    hostnames.append(hostname_or_ip)
+            else:
+                # C'est déjà un hostname
+                if '.' in hostname_or_ip and len(hostname_or_ip) > 3:
+                    hostnames.append(hostname_or_ip.lower())
         
-        return hostnames
+        # Déduplication tout en gardant l'ordre
+        seen = set()
+        deduplicated = []
+        for h in hostnames:
+            if h not in seen:
+                seen.add(h)
+                deduplicated.append(h)
+        
+        return deduplicated
+
+    def _is_ip_address(self, addr: str) -> bool:
+        """Vérifie si une chaîne est une adresse IP (IPv4 ou IPv6)."""
+        # IPv4
+        if re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', addr):
+            return True
+        # IPv6 (pattern simplifié)
+        if re.match(r'^[0-9a-fA-F:]+$', addr) and '::' in addr or addr.count(':') >= 2:
+            return True
+        return False
 
     def run_traceroute_fallback(self, target: str, max_hops: int = 15) -> List[str]:
         """
@@ -628,6 +797,78 @@ class RegionDetector:
         
         return hostnames
     
+    def _analyze_ip_ranges(self, hostnames: List[str]) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Analyse les plages d'adresses IP pour identifier provider et région.
+        Utile pour Cloudflare et Akamai qui utilisent beaucoup d'IP directes.
+        """
+        for hostname_or_ip in hostnames:
+            # Cloudflare IPv6 ranges
+            if hostname_or_ip.startswith('2606:4700'):
+                logging.info(f"DEBUG: Cloudflare IPv6 détecté: {hostname_or_ip}")
+                
+                # Analyser les patterns IPv6 pour déduire la région
+                # Les adresses Cloudflare contiennent parfois des indices géographiques
+                
+                # Pattern 2606:4700:10::6816:xxxx souvent Europe (CDG/AMS/LHR)
+                if '2606:4700:10::' in hostname_or_ip:
+                    # Heuristique basée sur les derniers octets
+                    last_part = hostname_or_ip.split(':')[-1]
+                    try:
+                        last_int = int(last_part, 16)
+                        # Ces patterns sont empiriques et peuvent nécessiter des ajustements
+                        if 0x1400 <= last_int <= 0x14ff:  # 1400-14ff range souvent CDG
+                            return 'cloudflare', 'cdg'
+                        elif 0x1500 <= last_int <= 0x15ff:  # 1500-15ff range souvent AMS
+                            return 'cloudflare', 'ams'
+                        elif 0x1600 <= last_int <= 0x16ff:  # 1600-16ff range souvent LHR
+                            return 'cloudflare', 'lhr'
+                    except ValueError:
+                        pass
+                    return 'cloudflare', 'cdg'  # Défaut Europe
+                
+                # Pattern 2606:4700::68xx:xxxx souvent US/Global
+                elif '2606:4700::68' in hostname_or_ip:
+                    last_part = hostname_or_ip.split(':')[-1]
+                    try:
+                        last_int = int(last_part, 16)
+                        if 0x8500 <= last_int <= 0x85ff:  # 85xx range souvent IAD
+                            return 'cloudflare', 'iad'
+                        elif 0x8600 <= last_int <= 0x86ff:  # 86xx range souvent LAX
+                            return 'cloudflare', 'lax'
+                    except ValueError:
+                        pass
+                    return 'cloudflare', 'iad'  # Défaut US East
+                
+                # Autres patterns
+                return 'cloudflare', None
+            
+            # Cloudflare IPv4 ranges
+            if any(hostname_or_ip.startswith(prefix) for prefix in ['104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '104.26.', '104.27.', '104.28.', '104.29.', '104.30.', '104.31.', '172.64.', '172.65.', '172.66.', '172.67.']):
+                logging.info(f"DEBUG: Cloudflare IPv4 détecté: {hostname_or_ip}")
+                return 'cloudflare', None
+            
+            # Akamai patterns dans les IPs ou hostnames
+            if 'akamaitechnologies.com' in hostname_or_ip or 'akamaiedge.net' in hostname_or_ip:
+                logging.info(f"DEBUG: Akamai détecté: {hostname_or_ip}")
+                # Chercher des codes de région dans le hostname
+                if re.search(r'\.([a-z]{3})\d*\.', hostname_or_ip):
+                    region_match = re.search(r'\.([a-z]{3})\d*\.', hostname_or_ip)
+                    region_code = region_match.group(1)
+                    if region_code in ['ams', 'fra', 'lhr', 'cdg', 'sin', 'nrt', 'lax', 'ord', 'sea', 'dfw', 'atl', 'bos', 'mia', 'syd']:
+                        return 'akamai', region_code
+                return 'akamai', None
+            
+            # Akamai IPv6 patterns - amélioration pour linode.com
+            if hostname_or_ip.startswith('2a02:26f0:'):
+                logging.info(f"DEBUG: Akamai IPv6 détecté: {hostname_or_ip}")
+                # Pattern 2a02:26f0:2b80 souvent Europe
+                if '2a02:26f0:2b80:' in hostname_or_ip:
+                    return 'akamai', 'ams'  # Amsterdam par défaut pour l'Europe
+                return 'akamai', None
+        
+        return None, None
+
     def detect_provider_and_region(self, hostnames: List[str]) -> Tuple[Optional[str], Optional[str]]:
         """
         Détecte le fournisseur et la région basé sur les noms d'hôtes.
@@ -638,17 +879,28 @@ class RegionDetector:
         Returns:
             Tuple (provider, region) ou (None, None) si non détecté
         """
+        logging.info(f"DEBUG: Analyse de {len(hostnames)} hostnames: {hostnames[:5]}")
+        
         # Vérifier chaque hostname contre les patterns
         for hostname in hostnames:
             hostname_lower = hostname.lower()
             
             # Identifier le provider d'abord
             provider = self._identify_provider(hostname_lower)
+            logging.info(f"DEBUG: Hostname '{hostname_lower}' -> provider: {provider}")
             if provider:
                 # Chercher la région pour ce provider
                 region = self._identify_region(hostname_lower, provider)
+                logging.info(f"DEBUG: Hostname '{hostname_lower}' -> région: {region}")
                 if region:
                     return provider, region
+        
+        # Si pas trouvé par hostnames, essayer l'analyse d'IP
+        logging.info(f"DEBUG: Analyse IP ranges pour {len(hostnames)} entrées")
+        provider, region = self._analyze_ip_ranges(hostnames)
+        if provider:
+            logging.info(f"DEBUG: IP ranges -> provider: {provider}, région: {region}")
+            return provider, region
         
         return None, None
     
@@ -658,9 +910,9 @@ class RegionDetector:
             'aws': ['amazonaws.com', 'aws.com', 'ec2', 'cloudfront'],
             'gcp': ['googleapis.com', 'google.com', 'gcp', 'googlers.com', '1e100.net', 'googleusercontent.com'],
             'azure': ['azure.com', 'microsoft.com', 'azureedge.net'],
-            'ovh': ['ovh.net', 'ovh.com', 'kimsufi.com', 'soyoustart.com', 'ovh.fr', '.fr.eu', 'gra-g', 'rbx-', 'sbg-', 'bhs-'],
-            'cloudflare': ['cloudflare.com', 'cloudflare.net', 'cf-dns.com'],
-            'akamai': ['akamai.com', 'akamai.net', 'akamaitechnologies.com', 'akam.net'],
+            'ovh': ['ovh.net', 'ovh.com', 'kimsufi.com', 'soyoustart.com', 'ovh.fr', '.fr.eu', 'gra-g', 'rbx-', 'sbg-', 'bhs-', 'be102.gra-g'],
+            'cloudflare': ['cloudflare.com', 'cloudflare.net', 'cf-dns.com', '2606:4700', '172.64.', '172.65.', '172.66.', '172.67.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '104.26.', '104.27.', '104.28.', '104.29.', '104.30.', '104.31.'],
+            'akamai': ['akamai.com', 'akamai.net', 'akamaitechnologies.com', 'akam.net', 'akamaiedge.net', 'akamai-staging.net', 'deploy.static.akamaitechnologies.com', 'deploy.akamaitechnologies.com'],
             'hetzner': ['hetzner.de', 'hetzner.com', 'your-server.de'],
             'digitalocean': ['digitalocean.com', 'do.co', 'nyc.co'],
             'github': ['github.com', 'github.io', 'githubassets.com']
@@ -699,14 +951,26 @@ class RegionDetector:
         """
         logging.info(f"DEBUG REGION: Début détection pour {target}")
         
-        # Méthode 1: Géolocalisation IP (plus fiable)
-        provider, region = self.detect_via_ip_geolocation(target)
-        logging.info(f"DEBUG REGION: Géolocalisation pour {target}: provider={provider}, region={region}")
-        if provider and region:
-            logging.info(f"DEBUG REGION: Succès géolocalisation pour {target}: {provider}->{region}")
-            return provider, region, []
+        # Méthode 1: Géolocalisation IP (plus fiable pour les providers)
+        provider_geo, region_geo = self.detect_via_ip_geolocation(target)
+        logging.info(f"DEBUG REGION: Géolocalisation pour {target}: provider={provider_geo}, region={region_geo}")
         
-        # Méthode 2: MTR (My Traceroute) - plus précis que traceroute classique
+        # Méthode 2: Analyse des plages IP pour providers spéciaux (Cloudflare, Akamai)
+        # Faire cette analyse tôt pour les IPs directs
+        provider_ip, region_ip = self._analyze_ip_ranges([target])
+        logging.info(f"DEBUG REGION: Analyse IP pour {target}: provider={provider_ip}, region={region_ip}")
+        
+        # Si on a trouvé une région via IP ranges, privilégier cela
+        if provider_ip and region_ip:
+            logging.info(f"DEBUG REGION: Succès IP ranges pour {target}: {provider_ip}->{region_ip}")
+            return provider_ip, region_ip, []
+        
+        # Si géolocalisation a trouvé provider ET région, l'utiliser
+        if provider_geo and region_geo:
+            logging.info(f"DEBUG REGION: Succès géolocalisation pour {target}: {provider_geo}->{region_geo}")
+            return provider_geo, region_geo, []
+        
+        # Méthode 3: MTR (My Traceroute) - plus précis que traceroute classique
         logging.info(f"DEBUG REGION: Tentative MTR pour {target}")
         hostnames = self.run_mtr(target)
         logging.info(f"DEBUG REGION: MTR pour {target}: {len(hostnames)} hostnames trouvés: {hostnames[:3]}")
@@ -717,15 +981,20 @@ class RegionDetector:
             if provider_tr and region_tr:
                 logging.info(f"DEBUG REGION: Succès MTR pour {target}: {provider_tr}->{region_tr}")
                 return provider_tr, region_tr, hostnames
-            # Si on a trouvé un provider via géolocalisation mais pas via MTR
-            elif provider and provider_tr:
-                logging.info(f"DEBUG REGION: Provider géo seulement pour {target}: {provider}")
-                return provider, None, hostnames
+            
+            # Essayer l'analyse IP ranges sur les hostnames trouvés
+            provider_ip_hostnames, region_ip_hostnames = self._analyze_ip_ranges(hostnames)
+            if provider_ip_hostnames and region_ip_hostnames:
+                logging.info(f"DEBUG REGION: Succès IP ranges hostnames pour {target}: {provider_ip_hostnames}->{region_ip_hostnames}")
+                return provider_ip_hostnames, region_ip_hostnames, hostnames
         
-        # Retourner ce qu'on a trouvé via géolocalisation même sans région
-        if provider:
-            logging.info(f"DEBUG REGION: Provider géo final pour {target}: {provider}")
-            return provider, None, hostnames
+        # Retourner ce qu'on a trouvé via géolocalisation ou IP ranges même sans région
+        if provider_ip:
+            logging.info(f"DEBUG REGION: Provider IP final pour {target}: {provider_ip}")
+            return provider_ip, region_ip, hostnames
+        elif provider_geo:
+            logging.info(f"DEBUG REGION: Provider géo final pour {target}: {provider_geo}")
+            return provider_geo, region_geo, hostnames
         
         logging.info(f"DEBUG REGION: Échec complet pour {target}")
         return None, None, hostnames

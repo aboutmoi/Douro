@@ -403,8 +403,8 @@ def analyze_domain(domain: str) -> DomainInfo:
                 detector = RegionDetector()
                 hosting_provider, hosting_region, hostnames = detector.detect_hosting_region(ip)
                 logging.info(f"DEBUG: Résultat pour {domain}: provider={hosting_provider}, region={hosting_region}, hostnames={len(hostnames) if hostnames else 0}")
-                result.hosting_provider = hosting_provider
-                result.hosting_region = hosting_region
+            result.hosting_provider = hosting_provider
+            result.hosting_region = hosting_region
             else:
                 logging.warning(f"DEBUG: RegionDetector est None pour {domain}")
                 result.hosting_provider = None

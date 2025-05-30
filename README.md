@@ -266,7 +266,7 @@ sudo systemctl restart douro
       "description": "Application principale"
     },
     {
-      "name": "api.entreprise.com", 
+      "name": "api.entreprise.com",
       "enabled": true,
       "description": "API métier critique"
     }
