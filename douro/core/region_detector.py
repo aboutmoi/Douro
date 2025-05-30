@@ -8,6 +8,7 @@ import logging
 import socket
 import requests
 from typing import Optional, List, Tuple, Dict
+from ipwhois import IPWhois
 
 
 class RegionDetector:
