@@ -174,6 +174,31 @@ douro_domain_info_info{hosting_region="us-east-1"}
 douro_domain_info_info{cdn="true"}
 ```
 
+## 📊 Grafana Dashboard
+
+Visualize your domain monitoring with our professional Grafana dashboard. See all your metrics in action:
+
+![Douro Dashboard](grafana/dourodash.png)
+
+### 🎯 Dashboard Features
+
+- **Domain Overview Table**: Complete infrastructure view with provider colorization (AWS=Blue, GCP=Green, OVH=Orange)
+- **Expiration Monitoring**: Track domain and TLS certificate expiration dates  
+- **Performance Metrics**: DNS resolution times and HTTP status codes
+- **Geographic Distribution**: Hosting regions and provider analysis
+- **CDN Detection**: Visual indicators for CDN usage
+
+### 🚀 Quick Import
+
+1. **Download**: Get the dashboard from [`grafana/DouroDash.json`](grafana/DouroDash.json)
+2. **Import**: In Grafana → Create → Import → Paste JSON
+3. **Configure**: Update datasource UID to match your Prometheus instance
+4. **Enjoy**: Professional monitoring dashboard ready to use!
+
+> 💡 **Pro tip**: The dashboard auto-refreshes every 5 seconds and provides rich tooltips for all metrics.
+
+Detailed setup instructions: [Grafana Setup Guide](grafana/README.md)
+
 ## 🔍 Prometheus Configuration
 
 Add to your `prometheus.yml`:
@@ -302,8 +327,12 @@ douro/
 │   └── install-service.sh   # Service installation
 ├── systemd/                 # Systemd configuration
 │   └── douro.service
-└── configs/                 # Configurations
-    └── logrotate.conf       # Log rotation
+├── configs/                 # Configurations
+│   └── logrotate.conf       # Log rotation
+└── grafana/                 # Grafana dashboard
+    ├── DouroDash.json       # Dashboard configuration
+    ├── dourodash.png        # Dashboard screenshot
+    └── README.md            # Grafana setup guide
 ```
 
 ## 📚 Documentation

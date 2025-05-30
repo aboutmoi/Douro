@@ -1,0 +1,632 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fendcm7udyneoc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-RdYlGr"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "days"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 8,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "displayMode": "basic",
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "left",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "12.0.1",
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "(douro_domain_expiration_timestamp - time()) / 86400",
+            "legendFormat": "{{domain}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Domain Expiration",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fendcm7udyneoc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 70,
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineWidth": 0,
+              "spanNulls": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 8,
+          "x": 8,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "alignValue": "left",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "auto",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "fendcm7udyneoc"
+            },
+            "editorMode": "code",
+            "expr": "douro_dns_resolve_duration_seconds",
+            "legendFormat": "{{domain}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "DNS Resolution",
+        "type": "state-timeline"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fendcm7udyneoc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "200": {
+                    "color": "green",
+                    "index": 0
+                  },
+                  "403": {
+                    "color": "yellow",
+                    "index": 3
+                  },
+                  "404": {
+                    "color": "red",
+                    "index": 1
+                  },
+                  "504": {
+                    "color": "red",
+                    "index": 2
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent"
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 8,
+          "x": 16,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.0.1",
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "douro_http_status_code",
+            "legendFormat": "{{domain}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "HTTP Status Code",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fendcm7udyneoc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "false": {
+                    "color": "red",
+                    "index": 1,
+                    "text": "❌"
+                  },
+                  "true": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "✅"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "domain"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 180
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "colored-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "hosting_provider"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 110
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "aws": {
+                          "color": "blue",
+                          "index": 0,
+                          "text": "AWS"
+                        },
+                        "azure": {
+                          "color": "light-blue",
+                          "index": 3,
+                          "text": "Azure"
+                        },
+                        "gcp": {
+                          "color": "green",
+                          "index": 1,
+                          "text": "GCP"
+                        },
+                        "ovh": {
+                          "color": "orange",
+                          "index": 2,
+                          "text": "OVH"
+                        },
+                        "unknown": {
+                          "color": "red",
+                          "index": 4,
+                          "text": "Unknown"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "hosting_region"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "country"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "asn"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "cdn"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 50
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "colored-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Time"
+              },
+              "properties": [
+                {
+                  "id": "custom.hidden",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value"
+              },
+              "properties": [
+                {
+                  "id": "custom.hidden",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Registrar"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 167
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "ASN Organization"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 214
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Domain"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 236
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 12
+        },
+        "id": 5,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "12.0.1",
+        "targets": [
+          {
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "douro_domain_info_info",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "Domain Information Overview",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "__name__": true,
+                "instance": true,
+                "job": true
+              },
+              "indexByName": {
+                "asn": 5,
+                "asn_org": 6,
+                "cdn": 7,
+                "country": 3,
+                "domain": 0,
+                "hosting_provider": 1,
+                "hosting_region": 2,
+                "registrar": 4
+              },
+              "renameByName": {
+                "asn": "ASN",
+                "asn_org": "ASN Organization",
+                "cdn": "CDN",
+                "country": "Country",
+                "domain": "Domain",
+                "hosting_provider": "Provider",
+                "hosting_region": "Region",
+                "registrar": "Registrar"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fendcm7udyneoc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-RdYlGr"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                }
+              ]
+            },
+            "unit": "days"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 12
+        },
+        "id": 4,
+        "options": {
+          "displayMode": "basic",
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "12.0.1",
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "(douro_tls_cert_expiration_timestamp - time()) / 86400",
+            "legendFormat": "{{domain}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "TLS Cert Expiration",
+        "type": "bargauge"
+      }
+    ],
+    "preload": false,
+    "refresh": "5s",
+    "schemaVersion": 41,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Douro Dashboard",
+    "uid": "cafceba2-bfd7-4c7f-8c0a-c09d5a2690a8",
+    "version": 25
+  }
