@@ -560,8 +560,7 @@ class RegionDetector:
                         '--report-cycles', '10',  # 10 cycles pour plus de précision comme demandé
                         '--max-ttl', str(max_hops),
                         '-b',  # Show both hostnames and IPs
-                        '--no-dns',  # Pas de résolution DNS pendant MTR pour plus de rapidité
-                        target
+                        target  # Avec DNS pour avoir les hostnames - PAS de --no-dns
                     ]
                 else:
                     # Fallback sans sudo pour les tests
