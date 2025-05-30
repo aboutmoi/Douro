@@ -557,7 +557,7 @@ class RegionDetector:
                         'sudo', 'mtr', 
                         ip_version,  # IPv4 ou IPv6
                         '--report', 
-                        '--report-cycles', '3',  # Plus de cycles pour plus de précision
+                        '--report-cycles', '10',  # 10 cycles pour plus de précision comme demandé
                         '--max-ttl', str(max_hops),
                         '-b',  # Show both hostnames and IPs
                         '--no-dns',  # Pas de résolution DNS pendant MTR pour plus de rapidité
@@ -569,7 +569,7 @@ class RegionDetector:
                         'mtr', 
                         ip_version,  # IPv4 ou IPv6
                         '--report', 
-                        '--report-cycles', '3',  # Plus de cycles pour plus de précision
+                        '--report-cycles', '10',  # 10 cycles pour plus de précision
                         '--max-ttl', str(max_hops),
                         '-b',  # Show both hostnames and IPs
                         target  # Avec DNS pour avoir les hostnames
@@ -581,7 +581,7 @@ class RegionDetector:
                     cmd, 
                     capture_output=True, 
                     text=True, 
-                    timeout=45
+                    timeout=60  # Augmenter timeout pour 10 cycles
                 )
                 
                 logging.info(f"DEBUG MTR: Return code pour {target} ({ip_version}): {result.returncode}")
@@ -907,20 +907,21 @@ class RegionDetector:
     def _identify_provider(self, hostname: str) -> Optional[str]:
         """Identifie le fournisseur basé sur le nom d'hôte."""
         provider_indicators = {
-            'aws': ['amazonaws.com', 'aws.com', 'ec2', 'cloudfront'],
+            'aws': ['amazonaws.com', 'aws.com', 'ec2', 'cloudfront', 'amazon.com'],
             'gcp': ['googleapis.com', 'google.com', 'gcp', 'googlers.com', '1e100.net', 'googleusercontent.com'],
-            'azure': ['azure.com', 'microsoft.com', 'azureedge.net'],
-            'ovh': ['ovh.net', 'ovh.com', 'kimsufi.com', 'soyoustart.com', 'ovh.fr', '.fr.eu', 'gra-g', 'rbx-', 'sbg-', 'bhs-', 'be102.gra-g'],
+            'azure': ['azure.com', 'microsoft.com', 'azureedge.net', 'msft.net'],
+            'ovh': ['ovh.net', 'ovh.com', 'kimsufi.com', 'soyoustart.com', 'ovh.fr', '.fr.eu', 'gra-g', 'rbx-', 'sbg-', 'bhs-', 'be102.gra-g', 'be103.gra-g', 'be104.gra-g', 'gra-g1-nc', 'gra-g2-nc', 'gra-g3-nc', 'rbx-g1-nc'],
             'cloudflare': ['cloudflare.com', 'cloudflare.net', 'cf-dns.com', '2606:4700', '172.64.', '172.65.', '172.66.', '172.67.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '104.26.', '104.27.', '104.28.', '104.29.', '104.30.', '104.31.'],
-            'akamai': ['akamai.com', 'akamai.net', 'akamaitechnologies.com', 'akam.net', 'akamaiedge.net', 'akamai-staging.net', 'deploy.static.akamaitechnologies.com', 'deploy.akamaitechnologies.com'],
+            'akamai': ['akamai.com', 'akamai.net', 'akamaitechnologies.com', 'akam.net', 'akamaiedge.net', 'akamai-staging.net', 'deploy.static.akamaitechnologies.com', 'deploy.akamaitechnologies.com', 'g2a02-26f0', 'a248.e.akamai.net', 'e.akamai.net'],
             'hetzner': ['hetzner.de', 'hetzner.com', 'your-server.de'],
             'digitalocean': ['digitalocean.com', 'do.co', 'nyc.co'],
-            'github': ['github.com', 'github.io', 'githubassets.com']
+            'github': ['github.com', 'github.io', 'githubassets.com', 'githubusercontent.com']
         }
         
         for provider, indicators in provider_indicators.items():
             for indicator in indicators:
                 if indicator in hostname:
+                    logging.debug(f"DEBUG: Provider '{provider}' détecté via pattern '{indicator}' dans '{hostname}'")
                     return provider
         
         return None
