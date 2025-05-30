@@ -971,6 +971,7 @@ class RegionDetector:
             return provider_geo, region_geo, []
         
         # Méthode 3: MTR (My Traceroute) - plus précis que traceroute classique
+        # PRIORITAIRE pour OVH/Cloudflare/Akamai même si géolocalisation a trouvé le provider sans région
         logging.info(f"DEBUG REGION: Tentative MTR pour {target}")
         hostnames = self.run_mtr(target)
         logging.info(f"DEBUG REGION: MTR pour {target}: {len(hostnames)} hostnames trouvés: {hostnames[:3]}")
